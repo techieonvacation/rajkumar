@@ -1,0 +1,633 @@
+// Prisma 7 schema — connection URL lives in prisma.config.ts, not here.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ── Site Config ────────────────────────────────────────────────────────────────
+
+model SiteConfig {
+  id          String   @id @default("singleton")
+  // Core Identity
+  name        String   @default("Rajesh Kumar")
+  title       String   @default("India-China Business Consultant")
+  tagline     String   @default("Bridging India and China for Global Business Success")
+  bio         String   @default("")
+  email       String   @default("")
+  phone       String   @default("")
+  whatsapp    String   @default("")
+  location    String   @default("")
+  timezone    String   @default("Asia/Kolkata")
+  // Media
+  avatar      String   @default("")
+  heroImage   String   @default("")
+  ogImage     String   @default("")
+  resumeUrl   String   @default("")
+  // Social
+  linkedin    String   @default("")
+  twitter     String   @default("")
+  instagram   String   @default("")
+  facebook    String   @default("")
+  youtube     String   @default("")
+  wechat      String   @default("")
+  // Contact
+  calendlyUrl String   @default("")
+  mapEmbed    String   @default("")
+  officeAddr  String   @default("")
+  // Integrations
+  gaId        String   @default("")
+  gscId       String   @default("")
+  metaPixelId String   @default("")
+  clarityId   String   @default("")
+  // Flags
+  maintenanceMode Boolean @default(false)
+  updatedAt   DateTime @updatedAt
+  createdAt   DateTime @default(now())
+}
+
+// ── Hero ───────────────────────────────────────────────────────────────────────
+
+model Hero {
+  id          String   @id @default("singleton")
+  headline    String   @default("India-China Business Consultant")
+  subheadline String   @default("")
+  tagline     String   @default("")
+  cta1Label   String   @default("Schedule Consultation")
+  cta1Url     String   @default("/contact")
+  cta2Label   String   @default("View Services")
+  cta2Url     String   @default("/services")
+  image       String   @default("")
+  badge       String   @default("")
+  published   Boolean  @default(true)
+  updatedAt   DateTime @updatedAt
+  createdAt   DateTime @default(now())
+}
+
+// ── Profile / About ───────────────────────────────────────────────────────────
+
+model Profile {
+  id            String   @id @default("singleton")
+  mission       String   @default("")
+  vision        String   @default("")
+  philosophy    String   @default("")
+  biography     String   @default("")
+  yearsExp      Int      @default(0)
+  countriesCount Int     @default(0)
+  clientsCount  Int      @default(0)
+  companiesCount Int     @default(0)
+  languagesCount Int     @default(0)
+  coreValues    String[] // JSON array of values
+  updatedAt     DateTime @updatedAt
+  createdAt     DateTime @default(now())
+}
+
+// ── Stats / Counters ──────────────────────────────────────────────────────────
+
+model Stat {
+  id        String   @id @default(cuid())
+  label     String
+  value     String
+  suffix    String   @default("")
+  icon      String   @default("")
+  order     Int      @default(0)
+  published Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([order])
+}
+
+// ── Experience ────────────────────────────────────────────────────────────────
+
+model Experience {
+  id             String   @id @default(cuid())
+  company        String
+  companyLogo    String   @default("")
+  companyUrl     String   @default("")
+  role           String
+  type           String   @default("full-time") // full-time | part-time | contract | consulting | advisory
+  location       String   @default("")
+  country        String   @default("")
+  startDate      String
+  endDate        String   @default("Present")
+  isCurrent      Boolean  @default(false)
+  description    String   @default("")
+  responsibilities String[]
+  achievements   String[]
+  technologies   String[]
+  media          String[]
+  certificates   String[]
+  order          Int      @default(0)
+  featured       Boolean  @default(false)
+  published      Boolean  @default(true)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@index([order])
+  @@index([isCurrent])
+}
+
+// ── Services ──────────────────────────────────────────────────────────────────
+
+model Service {
+  id           String   @id @default(cuid())
+  title        String
+  slug         String   @unique
+  icon         String   @default("")
+  heroImage    String   @default("")
+  summary      String   @default("")
+  description  String   @default("")
+  benefits     String[]
+  process      Json     @default("[]") // [{step, title, description}]
+  deliverables String[]
+  duration     String   @default("")
+  investment   String   @default("")
+  faqs         Json     @default("[]") // [{question, answer}]
+  ctaLabel     String   @default("Get Started")
+  ctaUrl       String   @default("/contact")
+  featured     Boolean  @default(false)
+  order        Int      @default(0)
+  published    Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([slug])
+  @@index([order])
+  @@index([featured])
+}
+
+// ── Projects / Case Studies ───────────────────────────────────────────────────
+
+model Project {
+  id           String   @id @default(cuid())
+  title        String
+  slug         String   @unique
+  category     String   @default("Consulting")
+  client       String   @default("")
+  clientLogo   String   @default("")
+  industry     String   @default("")
+  location     String   @default("")
+  year         String   @default("")
+  summary      String   @default("")
+  challenge    String   @default("")
+  solution     String   @default("")
+  results      String   @default("")
+  metrics      Json     @default("[]") // [{label, value, unit}]
+  image        String   @default("")
+  images       String[]
+  tags         String[]
+  featured     Boolean  @default(false)
+  published    Boolean  @default(true)
+  order        Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([slug])
+  @@index([order])
+  @@index([featured])
+  @@index([category])
+}
+
+// ── Blog ──────────────────────────────────────────────────────────────────────
+
+model BlogPost {
+  id          String     @id @default(cuid())
+  title       String
+  slug        String     @unique
+  excerpt     String     @default("")
+  content     String     @default("")
+  coverImage  String     @default("")
+  category    String     @default("Insights")
+  tags        String[]
+  author      String     @default("Rajesh Kumar")
+  authorImage String     @default("")
+  readTime    Int        @default(5)
+  views       Int        @default(0)
+  likes       Int        @default(0)
+  published   Boolean    @default(false)
+  featured    Boolean    @default(false)
+  publishedAt DateTime?
+  seoTitle    String     @default("")
+  seoDesc     String     @default("")
+  ogImage     String     @default("")
+  order       Int        @default(0)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  @@index([slug])
+  @@index([published])
+  @@index([publishedAt])
+  @@index([category])
+  @@index([featured])
+}
+
+// ── Testimonials ──────────────────────────────────────────────────────────────
+
+model Testimonial {
+  id          String   @id @default(cuid())
+  name        String
+  title       String   @default("")
+  company     String   @default("")
+  companyLogo String   @default("")
+  avatar      String   @default("")
+  text        String
+  rating      Int      @default(5)
+  videoUrl    String   @default("")
+  country     String   @default("")
+  date        String   @default("")
+  featured    Boolean  @default(false)
+  published   Boolean  @default(true)
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([order])
+  @@index([featured])
+}
+
+// ── Client / Company Logos ────────────────────────────────────────────────────
+
+model Client {
+  id        String   @id @default(cuid())
+  name      String
+  logo      String
+  href      String   @default("#")
+  industry  String   @default("")
+  country   String   @default("")
+  order     Int      @default(0)
+  featured  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([order])
+}
+
+// ── Education ─────────────────────────────────────────────────────────────────
+
+model Education {
+  id          String   @id @default(cuid())
+  institution String
+  logo        String   @default("")
+  degree      String
+  field       String   @default("")
+  location    String   @default("")
+  startYear   String
+  endYear     String   @default("")
+  description String   @default("")
+  achievements String[]
+  order       Int      @default(0)
+  published   Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([order])
+}
+
+// ── Certifications ────────────────────────────────────────────────────────────
+
+model Certification {
+  id             String   @id @default(cuid())
+  title          String
+  organization   String
+  orgLogo        String   @default("")
+  image          String   @default("")
+  issueDate      String   @default("")
+  expiryDate     String   @default("")
+  credentialId   String   @default("")
+  credentialUrl  String   @default("")
+  skills         String[]
+  description    String   @default("")
+  featured       Boolean  @default(false)
+  published      Boolean  @default(true)
+  order          Int      @default(0)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@index([order])
+  @@index([featured])
+}
+
+// ── Awards / Honors ───────────────────────────────────────────────────────────
+
+model Award {
+  id           String   @id @default(cuid())
+  title        String
+  category     String   @default("award") // award | recognition | government | delegation | scholarship
+  organization String   @default("")
+  orgLogo      String   @default("")
+  location     String   @default("")
+  date         String   @default("")
+  dateIso      String   @default("")
+  description  String   @default("")
+  image        String   @default("")
+  images       String[]
+  link         String   @default("")
+  tags         String[]
+  featured     Boolean  @default(false)
+  published    Boolean  @default(true)
+  order        Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([order])
+  @@index([featured])
+  @@index([category])
+}
+
+// ── Skills ────────────────────────────────────────────────────────────────────
+
+model Skill {
+  id        String   @id @default(cuid())
+  name      String
+  category  String   @default("Business")
+  level     Int      @default(90) // 0-100
+  icon      String   @default("")
+  order     Int      @default(0)
+  published Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([order])
+  @@index([category])
+}
+
+// ── Languages ─────────────────────────────────────────────────────────────────
+
+model Language {
+  id          String   @id @default(cuid())
+  name        String
+  nativeName  String   @default("")
+  flag        String   @default("")
+  proficiency String   @default("Native") // Native | Fluent | Advanced | Intermediate | Basic
+  level       Int      @default(100) // 0-100 for progress bar
+  speaking    Int      @default(100)
+  reading     Int      @default(100)
+  writing     Int      @default(100)
+  listening   Int      @default(100)
+  certificates String[]
+  description String   @default("")
+  order       Int      @default(0)
+  featured    Boolean  @default(true)
+  published   Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([order])
+}
+
+// ── Gallery / Media ───────────────────────────────────────────────────────────
+
+model GalleryItem {
+  id          String   @id @default(cuid())
+  title       String
+  image       String
+  images      String[]
+  category    String   @default("Event") // Event | Conference | Travel | Corporate | Interview | Award
+  description String   @default("")
+  location    String   @default("")
+  date        String   @default("")
+  tags        String[]
+  featured    Boolean  @default(false)
+  published   Boolean  @default(true)
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([order])
+  @@index([featured])
+  @@index([category])
+}
+
+// ── Publications ──────────────────────────────────────────────────────────────
+
+model Publication {
+  id          String   @id @default(cuid())
+  title       String
+  type        String   @default("article") // article | research | report | video | interview | press
+  publisher   String   @default("")
+  publisherLogo String @default("")
+  url         String   @default("")
+  date        String   @default("")
+  description String   @default("")
+  image       String   @default("")
+  tags        String[]
+  featured    Boolean  @default(false)
+  published   Boolean  @default(true)
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([order])
+  @@index([featured])
+  @@index([type])
+}
+
+// ── FAQs ──────────────────────────────────────────────────────────────────────
+
+model Faq {
+  id        String   @id @default(cuid())
+  question  String
+  answer    String
+  category  String   @default("General")
+  order     Int      @default(0)
+  published Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([order])
+  @@index([published])
+}
+
+// ── Contact Messages ──────────────────────────────────────────────────────────
+
+model Contact {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  phone     String   @default("")
+  company   String   @default("")
+  country   String   @default("")
+  subject   String   @default("")
+  service   String   @default("")
+  budget    String   @default("")
+  message   String
+  status    String   @default("new") // new | read | replied | archived
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([email])
+  @@index([createdAt])
+  @@index([status])
+}
+
+// ── Newsletter ────────────────────────────────────────────────────────────────
+
+model Subscriber {
+  id          String   @id @default(cuid())
+  email       String   @unique
+  name        String   @default("")
+  status      String   @default("active") // active | unsubscribed
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([email])
+  @@index([status])
+}
+
+// ── Page SEO ──────────────────────────────────────────────────────────────────
+
+model PageSeo {
+  id            String   @id // page slug: "home" | "about" | "services" | etc.
+  title         String
+  description   String
+  keywords      String[]
+  ogTitle       String   @default("")
+  ogDescription String   @default("")
+  ogImage       String   @default("")
+  canonical     String   @default("")
+  noIndex       Boolean  @default(false)
+  structuredData Json    @default("{}")
+  updatedAt     DateTime @updatedAt
+  createdAt     DateTime @default(now())
+}
+
+// ── Navigation ────────────────────────────────────────────────────────────────
+
+model NavItem {
+  id        String    @id @default(cuid())
+  label     String
+  href      String
+  icon      String    @default("")
+  external  Boolean   @default(false)
+  order     Int       @default(0)
+  parentId  String?
+  parent    NavItem?  @relation("NavChildren", fields: [parentId], references: [id])
+  children  NavItem[] @relation("NavChildren")
+  published Boolean   @default(true)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@index([order])
+  @@index([parentId])
+}
+
+// ── Social Links ──────────────────────────────────────────────────────────────
+
+model SocialLink {
+  id        String   @id @default(cuid())
+  platform  String   // linkedin | twitter | instagram | facebook | youtube | wechat
+  url       String
+  icon      String   @default("")
+  label     String   @default("")
+  order     Int      @default(0)
+  published Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([order])
+}
+
+// ── Downloads ─────────────────────────────────────────────────────────────────
+
+model Download {
+  id          String   @id @default(cuid())
+  title       String
+  description String   @default("")
+  fileUrl     String
+  fileName    String   @default("")
+  fileSize    String   @default("")
+  mimeType    String   @default("")
+  category    String   @default("Resume")
+  downloads   Int      @default(0)
+  published   Boolean  @default(true)
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([order])
+}
+
+// ── Activity Logs ─────────────────────────────────────────────────────────────
+
+model ActivityLog {
+  id        String   @id @default(cuid())
+  action    String
+  entity    String   @default("")
+  entityId  String   @default("")
+  details   String   @default("")
+  ipAddress String   @default("")
+  userAgent String   @default("")
+  userId    String   @default("admin")
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+  @@index([entity])
+}
+
+// ── Admin Auth Throttle ───────────────────────────────────────────────────────
+
+model AdminAuthThrottle {
+  id            String    @id // hashed IP
+  failedCount   Int       @default(0)
+  firstFailedAt DateTime  @default(now())
+  lockedUntil   DateTime?
+  updatedAt     DateTime  @updatedAt
+}
+
+// ── Analytics Snapshots ───────────────────────────────────────────────────────
+
+model AnalyticsSnapshot {
+  id            String   @id @default(cuid())
+  date          String   // yyyy-mm-dd
+  pageViews     Int      @default(0)
+  visitors      Int      @default(0)
+  contacts      Int      @default(0)
+  blogViews     Int      @default(0)
+  topPages      Json     @default("[]")
+  createdAt     DateTime @default(now())
+
+  @@index([date])
+}
+
+// ── Theme Settings ────────────────────────────────────────────────────────────
+
+model ThemeSettings {
+  id              String   @id @default("singleton")
+  defaultMode     String   @default("light") // light | dark | system
+  primaryColor    String   @default("262.881") // oklch hue
+  accentColor     String   @default("")
+  fontHeading     String   @default("Plus Jakarta Sans")
+  fontBody        String   @default("Inter")
+  borderRadius    String   @default("0.625rem")
+  updatedAt       DateTime @updatedAt
+  createdAt       DateTime @default(now())
+}
+
+// ── Email Templates ───────────────────────────────────────────────────────────
+
+model EmailTemplate {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  subject   String
+  html      String
+  text      String   @default("")
+  variables String[] // list of placeholder variables
+  published Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ── API Keys (Integrations) ───────────────────────────────────────────────────
+
+model Integration {
+  id        String   @id @default(cuid())
+  name      String   @unique // "openai" | "cloudinary" | "resend" | "google_analytics" | etc.
+  config    Json     @default("{}") // key-value settings (never expose raw secrets here)
+  enabled   Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
