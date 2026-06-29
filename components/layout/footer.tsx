@@ -154,7 +154,7 @@ function BrandColumn() {
           className={cn(
             "flex h-10 w-10 shrink-0 items-center justify-center rounded-xl",
             "bg-white/10 text-white",
-            "font-heading text-[13px] font-semibold tracking-tight",
+            "font-heading text-base font-semibold tracking-tight",
             "transition-colors group-hover:bg-white/15"
           )}
           aria-hidden="true"
@@ -162,11 +162,8 @@ function BrandColumn() {
           RK
         </div>
         <div className="flex flex-col leading-none">
-          <span className="font-heading text-[15px] font-semibold tracking-tight text-white">
+          <span className="font-heading text-base font-semibold tracking-tight text-white">
             Rajesh Kumar
-          </span>
-          <span className="mt-0.5 text-[11px] font-light text-white/50">
-            India‑China Business Consultant
           </span>
         </div>
       </Link>
@@ -305,7 +302,7 @@ export function Footer() {
       aria-label="Site footer"
     >
       {/* Main grid */}
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-340 px-5 min-[580px]:px-8">
         <div className="py-14 lg:py-16">
           <div
             className={cn(

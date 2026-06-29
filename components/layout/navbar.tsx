@@ -4,7 +4,7 @@ import * as React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, CalendarDays, ChevronRight, ChevronDown, Globe } from "lucide-react";
+import { Menu, X, CalendarDays, ChevronDown, ChevronRight, Globe } from "lucide-react";
 import {
   Sheet,
   SheetContent,
@@ -32,12 +32,36 @@ const NAV_LINKS: NavLink[] = [
     label: "Services",
     href: "/services",
     children: [
-      { label: "Market Entry Strategy", href: "/services/market-entry", description: "Enter India or China markets with confidence" },
-      { label: "India-China Consulting", href: "/services/india-china-consulting", description: "End-to-end corridor advisory" },
-      { label: "Chinese Interpretation", href: "/services/interpretation", description: "HSK-6 Mandarin for high-stakes meetings" },
-      { label: "Business Delegations", href: "/services/delegations", description: "Curated government & industry programs" },
-      { label: "Corporate Training", href: "/services/training", description: "Cross-cultural competency workshops" },
-      { label: "Risk & Compliance", href: "/services/risk-compliance", description: "Due diligence and geopolitical risk" },
+      {
+        label: "Market Entry Strategy",
+        href: "/services/market-entry",
+        description: "Enter India or China markets with confidence",
+      },
+      {
+        label: "India-China Consulting",
+        href: "/services/india-china-consulting",
+        description: "End-to-end corridor advisory",
+      },
+      {
+        label: "Chinese Interpretation",
+        href: "/services/interpretation",
+        description: "HSK-6 Mandarin for high-stakes meetings",
+      },
+      {
+        label: "Business Delegations",
+        href: "/services/delegations",
+        description: "Curated government & industry programs",
+      },
+      {
+        label: "Corporate Training",
+        href: "/services/training",
+        description: "Cross-cultural competency workshops",
+      },
+      {
+        label: "Risk & Compliance",
+        href: "/services/risk-compliance",
+        description: "Due diligence and geopolitical risk",
+      },
     ],
   },
   { label: "Experience", href: "/experience" },
@@ -52,13 +76,12 @@ function ScrollProgress() {
   const [progress, setProgress] = React.useState(0);
 
   React.useEffect(() => {
-    const handleScroll = () => {
-      const scrolled = window.scrollY;
+    const onScroll = () => {
       const total = document.documentElement.scrollHeight - window.innerHeight;
-      setProgress(total > 0 ? (scrolled / total) * 100 : 0);
+      setProgress(total > 0 ? (window.scrollY / total) * 100 : 0);
     };
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   return (
@@ -77,8 +100,7 @@ function AnnouncementBar() {
   const [dismissed, setDismissed] = React.useState(false);
 
   React.useEffect(() => {
-    const stored = sessionStorage.getItem("rk-announce-dismissed");
-    if (stored) setDismissed(true);
+    if (sessionStorage.getItem("rk-announce-dismissed")) setDismissed(true);
   }, []);
 
   const dismiss = () => {
@@ -93,7 +115,10 @@ function AnnouncementBar() {
       <p className="text-[12px] font-medium">
         <span className="mr-2 inline-block h-1.5 w-1.5 animate-pulse rounded-full bg-primary-foreground/70 align-middle" />
         Available for Q3 2026 engagements —{" "}
-        <Link href="/contact" className="underline underline-offset-2 hover:opacity-90">
+        <Link
+          href="/contact"
+          className="underline underline-offset-2 hover:opacity-90"
+        >
           Book a free 30-min strategy call
         </Link>
       </p>
@@ -115,119 +140,157 @@ function NavLogo({ onClick }: { onClick?: () => void }) {
     <Link
       href="/"
       onClick={onClick}
-      className="group flex items-center gap-3 outline-none focus-visible:ring-2 focus-visible:ring-primary/25 rounded-xl"
+      className="group flex items-center gap-3 rounded-xl outline-none focus-visible:ring-2 focus-visible:ring-primary/25"
       aria-label="Rajesh Kumar — Home"
     >
-      {/* RK monogram */}
       <div
         className={cn(
           "flex h-9 w-9 shrink-0 items-center justify-center rounded-xl",
           "bg-primary text-primary-foreground",
-          "font-heading text-[13px] font-semibold tracking-tight",
+          "font-heading text-base font-semibold tracking-tight",
           "transition-opacity group-hover:opacity-90"
         )}
         aria-hidden="true"
       >
         RK
       </div>
-
-      {/* Name + title */}
       <div className="flex flex-col leading-none">
-        <span className="font-heading text-[15px] font-semibold tracking-tight text-foreground">
+        <span className="font-heading text-base font-semibold tracking-tight text-foreground">
           Rajesh Kumar
-        </span>
-        <span className="text-[11px] font-light text-muted-foreground mt-0.5">
-          India‑China Business Consultant
         </span>
       </div>
     </Link>
   );
 }
 
-/* ─── Desktop nav link (with optional dropdown) ──────────────────────────────── */
+/* ─── Desktop pill nav — React Bits PillNav pattern via Framer Motion ─────────── */
+/*
+ * The sliding pill background (layoutId="nav-pill") mirrors the React Bits
+ * PillNav effect without GSAP. Priority: hovered > active, so only ONE pill
+ * exists at a time and Framer Motion slides it smoothly between items.
+ */
 
-function DesktopNavLink({ label, href, active, children }: NavLink & { active: boolean }) {
-  const [open, setOpen] = React.useState(false);
-  const hasDropdown = children && children.length > 0;
-  const timerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+function DesktopPillNav({
+  links,
+  isActive,
+}: {
+  links: NavLink[];
+  isActive: (href: string) => boolean;
+}) {
+  const [hoveredHref, setHoveredHref] = React.useState<string | null>(null);
+  const [openDropdown, setOpenDropdown] = React.useState<string | null>(null);
+  const ddTimer = React.useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const openMenu = () => {
-    if (timerRef.current) clearTimeout(timerRef.current);
-    setOpen(true);
+  const openDD = (href: string) => {
+    if (ddTimer.current) clearTimeout(ddTimer.current);
+    setOpenDropdown(href);
   };
-  const closeMenu = () => {
-    timerRef.current = setTimeout(() => setOpen(false), 120);
+  const closeDD = () => {
+    ddTimer.current = setTimeout(() => setOpenDropdown(null), 160);
   };
 
   return (
     <div
-      className="relative"
-      onMouseEnter={hasDropdown ? openMenu : undefined}
-      onMouseLeave={hasDropdown ? closeMenu : undefined}
+      className="hidden lg:flex items-center rounded-full bg-muted/80 p-1.5"
+      onMouseLeave={() => {
+        setHoveredHref(null);
+        closeDD();
+      }}
+      role="list"
+      aria-label="Site navigation"
     >
-      <Link
-        href={href}
-        className={cn(
-          "relative flex items-center gap-0.5 px-1 py-1 text-[13.5px] font-medium transition-colors",
-          "outline-none focus-visible:ring-2 focus-visible:ring-primary/25 rounded-md",
-          active
-            ? "text-primary"
-            : "text-muted-foreground hover:text-foreground"
-        )}
-        aria-current={active ? "page" : undefined}
-      >
-        {label}
-        {hasDropdown && (
-          <ChevronDown
-            className={cn("size-3.5 transition-transform duration-200", open ? "rotate-180" : "")}
-          />
-        )}
-        {/* Active underline */}
-        {active && (
-          <motion.span
-            layoutId="nav-active-underline"
-            className="absolute bottom-0 left-0 right-0 h-0.5 rounded-full bg-primary"
-            transition={{ type: "spring", bounce: 0.2, duration: 0.4 }}
-          />
-        )}
-      </Link>
+      {links.map((link) => {
+        const active = isActive(link.href);
+        const hasDD = Boolean(link.children?.length);
+        /* Show the sliding pill for the hovered item; fall back to active when nothing is hovered */
+        const showPill =
+          hoveredHref === link.href ||
+          (hoveredHref === null && active);
 
-      {/* Dropdown */}
-      <AnimatePresence>
-        {hasDropdown && open && (
-          <motion.div
-            initial={{ opacity: 0, y: 8, scale: 0.97 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 6, scale: 0.97 }}
-            transition={{ duration: 0.18, ease: "easeOut" }}
-            onMouseEnter={openMenu}
-            onMouseLeave={closeMenu}
-            className="absolute left-0 top-[calc(100%+8px)] z-50 w-72 rounded-2xl bg-popover p-1.5 shadow-xl"
+        return (
+          <div
+            key={link.href}
+            className="relative"
+            role="listitem"
+            onMouseEnter={() => {
+              setHoveredHref(link.href);
+              hasDD ? openDD(link.href) : closeDD();
+            }}
           >
-            {children!.map((child) => (
-              <Link
-                key={child.href}
-                href={child.href}
-                className="group flex flex-col rounded-xl px-3.5 py-2.5 transition-colors hover:bg-muted"
-              >
-                <span className="text-[13px] font-medium text-foreground group-hover:text-primary transition-colors">
-                  {child.label}
-                </span>
-                {child.description && (
-                  <span className="mt-0.5 text-[11.5px] font-light text-muted-foreground">
-                    {child.description}
-                  </span>
-                )}
-              </Link>
-            ))}
-          </motion.div>
-        )}
-      </AnimatePresence>
+            <Link
+              href={link.href}
+              className={cn(
+                "relative flex items-center gap-1 rounded-full px-3.5 py-2",
+                "text-sm font-medium",
+                "outline-none focus-visible:ring-2 focus-visible:ring-primary/25",
+                showPill ? "text-foreground" : "text-muted-foreground transition-colors duration-100 hover:text-foreground"
+              )}
+              aria-current={active ? "page" : undefined}
+            >
+              {/* Sliding pill background — shared layoutId keeps it one element */}
+              {showPill && (
+                <motion.span
+                  layoutId="nav-pill"
+                  className="absolute inset-0 rounded-full bg-background"
+                  style={{ zIndex: 0 }}
+                  initial={false}
+                  transition={{ type: "spring", stiffness: 400, damping: 38 }}
+                />
+              )}
+              <span className="relative z-10">{link.label}</span>
+              {hasDD && (
+                <ChevronDown
+                  className={cn(
+                    "relative z-10 size-3.5 transition-transform duration-200",
+                    openDropdown === link.href && "rotate-180"
+                  )}
+                  strokeWidth={2}
+                />
+              )}
+            </Link>
+
+            {/* Dropdown */}
+            <AnimatePresence>
+              {hasDD && openDropdown === link.href && (
+                <motion.div
+                  initial={{ opacity: 0, y: 6, scale: 0.98 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: 4, scale: 0.98 }}
+                  transition={{ duration: 0.15, ease: "easeOut" }}
+                  onMouseEnter={() => {
+                    if (ddTimer.current) clearTimeout(ddTimer.current);
+                    setHoveredHref(link.href);
+                  }}
+                  onMouseLeave={closeDD}
+                  className="absolute left-0 top-[calc(100%+10px)] z-50 w-72 rounded-2xl bg-popover p-1.5 shadow-xl"
+                >
+                  {link.children!.map((child) => (
+                    <Link
+                      key={child.href}
+                      href={child.href}
+                      className="group flex flex-col rounded-xl px-3.5 py-2.5 transition-colors hover:bg-muted"
+                    >
+                      <span className="text-sm font-medium text-foreground group-hover:text-primary transition-colors">
+                        {child.label}
+                      </span>
+                      {child.description && (
+                        <span className="mt-0.5 text-[11.5px] font-light text-muted-foreground">
+                          {child.description}
+                        </span>
+                      )}
+                    </Link>
+                  ))}
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        );
+      })}
     </div>
   );
 }
 
-/* ─── Mobile nav link ────────────────────────────────────────────────────────── */
+/* ─── Mobile nav link ─────────────────────────────────────────────────────────── */
 
 function MobileNavLink({
   label,
@@ -237,7 +300,7 @@ function MobileNavLink({
   onClose,
 }: NavLink & { active: boolean; onClose: () => void }) {
   const [expanded, setExpanded] = React.useState(false);
-  const hasChildren = children && children.length > 0;
+  const hasChildren = Boolean(children?.length);
 
   if (hasChildren) {
     return (
@@ -256,7 +319,10 @@ function MobileNavLink({
         >
           <span>{label}</span>
           <ChevronDown
-            className={cn("size-4 transition-transform", expanded ? "rotate-180" : "")}
+            className={cn(
+              "size-4 transition-transform duration-200",
+              expanded && "rotate-180"
+            )}
           />
         </button>
         <AnimatePresence>
@@ -273,7 +339,7 @@ function MobileNavLink({
                   <Link
                     href={child.href}
                     onClick={onClose}
-                    className="flex rounded-xl px-4 py-2 text-[13px] text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                    className="flex rounded-xl px-4 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
                   >
                     {child.label}
                   </Link>
@@ -308,7 +374,7 @@ function MobileNavLink({
   );
 }
 
-/* ─── Main Navbar ────────────────────────────────────────────────────────────── */
+/* ─── Main Navbar ─────────────────────────────────────────────────────────────── */
 
 export function Navbar() {
   const pathname = usePathname();
@@ -316,10 +382,10 @@ export function Navbar() {
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
   React.useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 12);
-    handleScroll();
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+    const onScroll = () => setScrolled(window.scrollY > 12);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   React.useEffect(() => {
@@ -341,7 +407,7 @@ export function Navbar() {
       {/* Announcement bar */}
       <AnnouncementBar />
 
-      {/* Nav bar */}
+      {/* Main header */}
       <header
         className={cn(
           "relative w-full transition-all duration-300",
@@ -351,37 +417,36 @@ export function Navbar() {
         )}
         role="banner"
       >
+        {/*
+         * Three-column layout:
+         *   [logo, flex-none] | [pill nav, flex-1 centered] | [controls, flex-none]
+         * Mobile collapses the pill nav; logo and controls remain visible.
+         */}
         <nav
-          className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8"
+          className="mx-auto flex h-16 max-w-340 items-center px-5 min-[580px]:px-8"
           aria-label="Main navigation"
         >
-          {/* Logo */}
-          <NavLogo />
-
-          {/* Desktop links */}
-          <div
-            className="hidden items-center gap-0.5 lg:flex"
-            role="list"
-            aria-label="Site navigation links"
-          >
-            {NAV_LINKS.map((link) => (
-              <div key={link.href} role="listitem">
-                <DesktopNavLink {...link} active={isActive(link.href)} />
-              </div>
-            ))}
+          {/* ── Logo ──────────────────────────────────────────────────────────── */}
+          <div className="flex-none">
+            <NavLogo />
           </div>
 
-          {/* Right controls */}
-          <div className="flex items-center gap-2">
+          {/* ── Desktop pill nav (lg+) — centred in the remaining space ───────── */}
+          <div className="hidden lg:flex flex-1 justify-center px-6">
+            <DesktopPillNav links={NAV_LINKS} isActive={isActive} />
+          </div>
+
+          {/* ── Right controls ─────────────────────────────────────────────────── */}
+          <div className="flex items-center gap-2 flex-none ml-auto lg:ml-0">
             <ThemeToggle />
 
-            {/* Language badge */}
-            <div className="hidden sm:flex items-center gap-1.5 rounded-xl bg-muted px-3 py-2 text-[12px] font-medium text-muted-foreground">
+            {/* Language / proficiency badge */}
+            <div className="hidden sm:flex items-center gap-1.5 rounded-full bg-muted px-3 py-2 text-sm font-medium text-muted-foreground">
               <Globe className="size-3.5" strokeWidth={1.75} />
               HSK‑6
             </div>
 
-            {/* CTA */}
+            {/* Primary CTA */}
             <Link
               href="/contact"
               className={cn(
@@ -396,14 +461,16 @@ export function Navbar() {
               Book Consultation
             </Link>
 
-            {/* Hamburger */}
+            {/* Hamburger (mobile / tablet) */}
             <div className="lg:hidden">
               <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
                 <SheetTrigger asChild>
                   <Button
                     variant="ghost"
                     size="icon"
-                    aria-label={mobileOpen ? "Close navigation menu" : "Open navigation menu"}
+                    aria-label={
+                      mobileOpen ? "Close navigation menu" : "Open navigation menu"
+                    }
                     aria-expanded={mobileOpen}
                     aria-controls="mobile-nav"
                     className="rounded-xl hover:bg-muted"
@@ -440,7 +507,7 @@ export function Navbar() {
                   id="mobile-nav"
                   className="w-[min(82vw,340px)] flex flex-col gap-0 p-0 bg-background"
                 >
-                  {/* Mobile nav header */}
+                  {/* Mobile header */}
                   <SheetHeader className="px-5 py-4 border-b border-border/40">
                     <div className="flex items-center justify-between">
                       <NavLogo onClick={closeMobileMenu} />
@@ -458,11 +525,11 @@ export function Navbar() {
                     <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
                   </SheetHeader>
 
-                  {/* Availability badge */}
+                  {/* Availability chip */}
                   <div className="mx-4 mt-3 flex items-center gap-2 rounded-xl bg-primary/10 px-4 py-2.5">
-                    <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
+                    <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-primary animate-pulse" />
                     <span className="text-[12px] font-medium text-primary">
-                      Available for Q3 2026
+                      Available for Q3 2026 engagements
                     </span>
                   </div>
 
@@ -481,7 +548,7 @@ export function Navbar() {
                     ))}
                   </nav>
 
-                  {/* CTA */}
+                  {/* Mobile CTA */}
                   <div className="p-4 border-t border-border/40 space-y-2">
                     <SheetClose asChild>
                       <Link
@@ -507,7 +574,7 @@ export function Navbar() {
           </div>
         </nav>
 
-        {/* Scroll progress bar */}
+        {/* Scroll progress */}
         <ScrollProgress />
       </header>
     </div>
