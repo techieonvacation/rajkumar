@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, type Variants } from "framer-motion";
 import { MapPin, Calendar, Award } from "lucide-react";
 
 /* ─── Data ───────────────────────────────────────────────────────── */
@@ -147,13 +147,13 @@ const entries: Entry[] = [
 
 /* ─── Animation helpers ──────────────────────────────────────────── */
 
-const fadeUp = {
+const fadeUp: Variants = {
   hidden: { opacity: 0, y: 20 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
   exit: { opacity: 0, y: -10, transition: { duration: 0.25 } },
 };
 
-const stagger = {
+const stagger: Variants = {
   hidden: {},
   visible: { transition: { staggerChildren: 0.1 } },
 };

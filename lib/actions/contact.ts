@@ -24,7 +24,7 @@ export async function submitContact(
   const parsed = contactSchema.safeParse(formData);
 
   if (!parsed.success) {
-    const firstError = parsed.error.errors[0]?.message ?? "Invalid form data";
+    const firstError = parsed.error.issues[0]?.message ?? "Invalid form data";
     return { success: false, error: firstError };
   }
 
@@ -94,7 +94,7 @@ export async function subscribeNewsletter(
   if (!parsed.success) {
     return {
       success: false,
-      error: parsed.error.errors[0]?.message ?? "Invalid email address",
+      error: parsed.error.issues[0]?.message ?? "Invalid email address",
     };
   }
 
