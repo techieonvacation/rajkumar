@@ -5,6 +5,7 @@ import { ServicesPreview } from "@/components/home/services-preview";
 import { ExperiencePreview } from "@/components/home/experience-preview";
 import { TestimonialsSection } from "@/components/home/testimonials-section";
 import { ContactCTA } from "@/components/home/contact-cta";
+import { getHero, getPublishedStats } from "@/lib/actions/home";
 
 export const metadata: Metadata = {
   title: "Rajesh Kumar — India-China Business Consultant",
@@ -17,10 +18,12 @@ export const metadata: Metadata = {
   },
 };
 
-export default function HomePage() {
+export default async function HomePage() {
+  const [hero, stats] = await Promise.all([getHero(), getPublishedStats()]);
+
   return (
     <>
-      <HeroSection />
+      <HeroSection hero={hero} stats={stats} />
       <ClientsMarquee />
       <ServicesPreview />
       <ExperiencePreview />

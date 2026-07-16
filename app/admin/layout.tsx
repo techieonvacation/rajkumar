@@ -10,21 +10,10 @@ import { cn } from "@/lib/utils";
 import { ThemeToggle } from "@/components/layout/theme-toggle";
 import {
   LayoutDashboard,
-  User,
   Star,
   Briefcase,
-  Clock,
-  FolderOpen,
   FileText,
-  Quote,
-  Award,
-  Languages,
-  Image,
-  HelpCircle,
   MessageSquare,
-  Mail,
-  Search,
-  Settings,
   LogOut,
   ChevronLeft,
   Menu,
@@ -49,36 +38,15 @@ const NAV_GROUPS: Array<{
   {
     label: "Content",
     items: [
-      { label: "Profile", href: "/admin/profile", icon: User },
       { label: "Hero", href: "/admin/hero", icon: Star },
       { label: "Services", href: "/admin/services", icon: Briefcase },
-      { label: "Experience", href: "/admin/experience", icon: Clock },
-      { label: "Projects", href: "/admin/projects", icon: FolderOpen },
       { label: "Blog", href: "/admin/blog", icon: FileText },
-      { label: "Testimonials", href: "/admin/testimonials", icon: Quote },
-    ],
-  },
-  {
-    label: "More",
-    items: [
-      { label: "Certifications", href: "/admin/certifications", icon: Award },
-      { label: "Languages", href: "/admin/languages", icon: Languages },
-      { label: "Gallery", href: "/admin/gallery", icon: Image },
-      { label: "FAQ", href: "/admin/faq", icon: HelpCircle },
     ],
   },
   {
     label: "Inbox",
     items: [
       { label: "Contacts", href: "/admin/contacts", icon: MessageSquare },
-      { label: "Newsletter", href: "/admin/newsletter", icon: Mail },
-    ],
-  },
-  {
-    label: "System",
-    items: [
-      { label: "SEO", href: "/admin/seo", icon: Search },
-      { label: "Settings", href: "/admin/settings", icon: Settings },
     ],
   },
 ];
