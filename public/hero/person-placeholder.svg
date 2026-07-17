@@ -1,0 +1,8 @@
+<svg width="480" height="560" viewBox="0 0 480 560" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <rect width="480" height="560" fill="transparent"/>
+  <ellipse cx="240" cy="200" rx="72" ry="80" fill="oklch(72.97% 0.01 279.63 / 25%)"/>
+  <path
+    d="M120 520C120 420 170 360 240 360C310 360 360 420 360 520"
+    fill="oklch(72.97% 0.01 279.63 / 20%)"
+  />
+</svg>

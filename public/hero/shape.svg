@@ -1,0 +1,11 @@
+<svg width="566" height="566" viewBox="0 0 566 566" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <path
+    d="M96 96C96 96 96 96 180 96H340C430 96 470 160 470 250C470 340 410 380 320 380H240V470C240 520 200 520 160 480L96 416V96Z"
+    fill="currentColor"
+  />
+  <path
+    d="M240 380H400C470 380 510 430 510 500C510 530 480 550 450 550H280L240 510V380Z"
+    fill="currentColor"
+    opacity="0.95"
+  />
+</svg>

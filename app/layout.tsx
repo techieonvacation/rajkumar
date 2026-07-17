@@ -1,16 +1,17 @@
 import type { Metadata } from "next";
-import { Inter, Plus_Jakarta_Sans, JetBrains_Mono } from "next/font/google";
+import { Sora, JetBrains_Mono } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 import "./globals.css";
 
-const inter = Inter({
+const sora = Sora({
   variable: "--font-sans",
   subsets: ["latin"],
   display: "swap",
+  weight: ["300", "400", "500", "600", "700"],
 });
 
-const plusJakarta = Plus_Jakarta_Sans({
+const soraHeading = Sora({
   variable: "--font-heading",
   subsets: ["latin"],
   display: "swap",
@@ -79,15 +80,15 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${plusJakarta.variable} ${jetbrainsMono.variable}`}
+      className={`dark ${sora.variable} ${soraHeading.variable} ${jetbrainsMono.variable}`}
       suppressHydrationWarning
       data-scroll-behavior="smooth"
     >
       <body className="min-h-screen bg-background font-sans antialiased">
         <ThemeProvider
           attribute="class"
-          defaultTheme="light"
-          enableSystem
+          defaultTheme="dark"
+          enableSystem={false}
           disableTransitionOnChange
         >
           {children}

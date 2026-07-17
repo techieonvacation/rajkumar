@@ -1,0 +1,21 @@
+<svg width="140" height="110" viewBox="0 0 140 110" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <path
+    d="M12 88C34 68 48 42 78 30C94 24 108 26 122 18"
+    stroke="currentColor"
+    stroke-width="2.25"
+    stroke-linecap="round"
+  />
+  <path
+    d="M108 14C116 18 124 22 128 28"
+    stroke="currentColor"
+    stroke-width="2.25"
+    stroke-linecap="round"
+  />
+  <path
+    d="M124 10L132 20L118 24"
+    stroke="currentColor"
+    stroke-width="2.25"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+</svg>
