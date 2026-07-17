@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { HeroSection } from "@/components/home/hero-section";
 import { HeroMarquee } from "@/components/home/hero-marquee";
-import { ClientsMarquee } from "@/components/home/clients-marquee";
 import { ServicesPreview } from "@/components/home/services-preview";
 import { ExperiencePreview } from "@/components/home/experience-preview";
 import { TestimonialsSection } from "@/components/home/testimonials-section";
@@ -26,10 +25,9 @@ export default async function HomePage() {
     <>
       {hero && <HeroSection hero={hero} stats={stats} />}
       <HeroMarquee />
-      {/* <ClientsMarquee /> */}
       <ServicesPreview />
       <ExperiencePreview />
-      <TestimonialsSection />
+      {/* <TestimonialsSection /> */}
       <ContactCTA />
     </>
   );

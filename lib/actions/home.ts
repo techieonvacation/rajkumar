@@ -2,8 +2,9 @@
 
 import { auth } from "@/auth";
 import { prisma } from "@/lib/db/prisma";
+import { withRetry, safeQuery } from "@/lib/db/resilient";
 import { revalidatePath } from "next/cache";
-import type { Prisma, Hero } from "@prisma/client";
+import type { Prisma, Hero, Stat } from "@prisma/client";
 
 async function requireAdmin() {
   const session = await auth();
@@ -39,24 +40,31 @@ function defaultHero(): Hero {
 }
 
 export async function getHero(): Promise<Hero> {
-  const hero = await prisma.hero.findUnique({ where: { id: "singleton" } });
+  const hero = await safeQuery(
+    () => prisma.hero.findUnique({ where: { id: "singleton" } }),
+    null
+  );
   return hero ?? defaultHero();
 }
 
 export async function getPublishedHero(): Promise<Hero | null> {
-  const hero = await prisma.hero.findUnique({ where: { id: "singleton" } });
+  const hero = await safeQuery(
+    () => prisma.hero.findUnique({ where: { id: "singleton" } }),
+    null
+  );
   if (!hero?.published) return null;
   return hero;
 }
 
 export async function updateHero(data: Prisma.HeroUpdateInput) {
   await requireAdmin();
-  const existing = await prisma.hero.findUnique({ where: { id: "singleton" } });
-  const hero = existing
-    ? await prisma.hero.update({ where: { id: "singleton" }, data })
-    : await prisma.hero.create({
-        data: { id: "singleton", ...(data as Prisma.HeroCreateInput) },
-      });
+  const hero = await withRetry(() =>
+    prisma.hero.upsert({
+      where: { id: "singleton" },
+      update: data,
+      create: { id: "singleton", ...(data as Prisma.HeroCreateInput) },
+    })
+  );
   revalidatePath("/");
   revalidatePath("/admin/hero");
   return { success: true, hero };
@@ -64,17 +72,25 @@ export async function updateHero(data: Prisma.HeroUpdateInput) {
 
 // ── Stats ──────────────────────────────────────────────────────────────────────
 
-export async function getStats() {
-  return prisma.stat.findMany({
-    orderBy: [{ order: "asc" }, { createdAt: "asc" }],
-  });
+export async function getStats(): Promise<Stat[]> {
+  return safeQuery(
+    () =>
+      prisma.stat.findMany({
+        orderBy: [{ order: "asc" }, { createdAt: "asc" }],
+      }),
+    []
+  );
 }
 
-export async function getPublishedStats() {
-  return prisma.stat.findMany({
-    where: { published: true },
-    orderBy: [{ order: "asc" }, { createdAt: "asc" }],
-  });
+export async function getPublishedStats(): Promise<Stat[]> {
+  return safeQuery(
+    () =>
+      prisma.stat.findMany({
+        where: { published: true },
+        orderBy: [{ order: "asc" }, { createdAt: "asc" }],
+      }),
+    []
+  );
 }
 
 export async function createStat(data: Prisma.StatCreateInput) {

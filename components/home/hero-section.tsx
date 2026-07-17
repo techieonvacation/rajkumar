@@ -147,19 +147,37 @@ export function HeroSection({ hero, stats }: HeroSectionProps) {
         className="pointer-events-none absolute left-[18%] top-[24%] z-5 hidden animate-float-bob-x xl:block"
         aria-hidden="true"
       >
-        <Image src={HERO_ASSETS.randomShape} alt="" width={80} height={80} />
+        <Image
+          src={HERO_ASSETS.randomShape}
+          alt=""
+          width={80}
+          height={80}
+          className="h-20 w-20"
+        />
       </div>
       <div
         className="pointer-events-none absolute left-[50%] top-40 z-5 hidden animate-float-bob-y xl:block"
         aria-hidden="true"
       >
-        <Image src={HERO_ASSETS.arrow} alt="" width={140} height={110} />
+        <Image
+          src={HERO_ASSETS.arrow}
+          alt=""
+          width={140}
+          height={110}
+          className="h-[110px] w-[140px]"
+        />
       </div>
       <div
         className="pointer-events-none absolute right-[22%] top-[15%] z-5 hidden animate-float-bob-y xl:block"
         aria-hidden="true"
       >
-        <Image src={HERO_ASSETS.sparkle} alt="" width={32} height={32} />
+        <Image
+          src={HERO_ASSETS.sparkle}
+          alt=""
+          width={32}
+          height={32}
+          className="h-8 w-8"
+        />
       </div>
 
       <nav
@@ -241,7 +259,7 @@ export function HeroSection({ hero, stats }: HeroSectionProps) {
                   width={20}
                   height={20}
                   aria-hidden="true"
-                  className="mr-2.5 inline-block"
+                  className="mr-2.5 inline-block h-5 w-5"
                 />
                 {greeting}
               </span>
