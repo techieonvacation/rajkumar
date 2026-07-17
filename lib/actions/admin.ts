@@ -1,7 +1,13 @@
 "use server";
 
+import { auth } from "@/auth";
 import { prisma } from "@/lib/db/prisma";
 import { revalidatePath } from "next/cache";
+
+async function requireAdmin() {
+  const session = await auth();
+  if (!session?.user) throw new Error("Unauthorized");
+}
 
 // ── Blog Posts ────────────────────────────────────────────────────────────────
 
@@ -30,6 +36,7 @@ export async function createBlogPost(data: {
   seoDesc?: string;
   ogImage?: string;
 }) {
+  await requireAdmin();
   const post = await prisma.blogPost.create({
     data: {
       ...data,
@@ -59,6 +66,7 @@ export async function updateBlogPost(
     ogImage: string;
   }>
 ) {
+  await requireAdmin();
   const existing = await prisma.blogPost.findUnique({ where: { id } });
   const wasPublished = existing?.published ?? false;
   const post = await prisma.blogPost.update({
@@ -76,6 +84,7 @@ export async function updateBlogPost(
 }
 
 export async function deleteBlogPost(id: string) {
+  await requireAdmin();
   const post = await prisma.blogPost.delete({ where: { id } });
   revalidatePath("/blog");
   revalidatePath("/admin/blog");
@@ -110,16 +119,21 @@ export async function createService(data: {
   ctaLabel?: string;
   ctaUrl?: string;
   featured?: boolean;
+  order?: number;
   published?: boolean;
 }) {
+  await requireAdmin();
   const service = await prisma.service.create({ data: data as Parameters<typeof prisma.service.create>[0]["data"] });
+  revalidatePath("/");
   revalidatePath("/services");
   revalidatePath("/admin/services");
   return { success: true, service };
 }
 
 export async function updateService(id: string, data: Record<string, unknown>) {
+  await requireAdmin();
   const service = await prisma.service.update({ where: { id }, data: data as Parameters<typeof prisma.service.update>[0]["data"] });
+  revalidatePath("/");
   revalidatePath("/services");
   revalidatePath(`/services/${service.slug}`);
   revalidatePath("/admin/services");
@@ -127,7 +141,9 @@ export async function updateService(id: string, data: Record<string, unknown>) {
 }
 
 export async function deleteService(id: string) {
+  await requireAdmin();
   await prisma.service.delete({ where: { id } });
+  revalidatePath("/");
   revalidatePath("/services");
   revalidatePath("/admin/services");
   return { success: true };

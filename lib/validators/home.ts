@@ -12,6 +12,7 @@ export const heroSchema = z.object({
   highlight: z.string().default(""),
   headlineSuffix: z.string().default(""),
   subheadline: z.string().default(""),
+  tagline: z.string().default(""),
   bullets: z.array(z.object({ value: z.string() })).default([]),
   cta1Label: z.string().default(""),
   cta1Url: z.string().default(""),

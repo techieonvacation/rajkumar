@@ -6,13 +6,17 @@ function createPrismaClient() {
   return new PrismaClient({ adapter });
 }
 
+function isClientStale(client: PrismaClient) {
+  return typeof (client as PrismaClient & { servicesSection?: unknown }).servicesSection === "undefined";
+}
+
 declare global {
   // eslint-disable-next-line no-var
   var __prisma: PrismaClient | undefined;
 }
 
-export const prisma = globalThis.__prisma ?? createPrismaClient();
-
-if (process.env.NODE_ENV !== "production") {
-  globalThis.__prisma = prisma;
+if (!globalThis.__prisma || isClientStale(globalThis.__prisma)) {
+  globalThis.__prisma = createPrismaClient();
 }
+
+export const prisma = globalThis.__prisma;

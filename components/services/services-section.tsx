@@ -4,19 +4,17 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
+import type { ServicesSection } from "@prisma/client";
 import { FancyButton } from "@/components/ui/fancy-button";
 import { HERO_ASSETS } from "@/lib/hero-assets";
-import {
-  CONSULTING_SERVICES,
-  SERVICES_SECTION,
-  type ConsultingService,
-} from "@/lib/services-data";
+import type { ServiceRowItem } from "@/lib/services-section-map";
 import { cn } from "@/lib/utils";
 
 const EASE = [0.25, 0.1, 0.25, 1] as [number, number, number, number];
 
 interface ServicesSectionProps {
-  services?: ConsultingService[];
+  section: ServicesSection;
+  services: ServiceRowItem[];
   showIntro?: boolean;
   showViewAll?: boolean;
   showCta?: boolean;
@@ -27,7 +25,7 @@ function ServiceRow({
   service,
   index,
 }: {
-  service: ConsultingService;
+  service: ServiceRowItem;
   index: number;
 }) {
   const number = String(index + 1).padStart(2, "0");
@@ -77,12 +75,15 @@ function ServiceRow({
 }
 
 export function ServicesSection({
-  services = CONSULTING_SERVICES,
+  section,
+  services,
   showIntro = true,
   showViewAll = false,
   showCta = false,
   className,
 }: ServicesSectionProps) {
+  if (!section.published) return null;
+
   return (
     <section className={cn("relative overflow-hidden bg-background py-20 md:py-28", className)}>
       <div
@@ -90,7 +91,7 @@ export function ServicesSection({
         aria-hidden="true"
       >
         <Image
-          src="https://ex-coders.com/html/xiomi/assets/img/shape/random-shape.png"
+          src={HERO_ASSETS.randomShape}
           alt=""
           fill
           className="object-contain object-left-top"
@@ -115,27 +116,35 @@ export function ServicesSection({
               className="shrink-0"
             />
             <span className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">
-              {SERVICES_SECTION.eyebrow}
+              {section.eyebrow}
             </span>
           </div>
 
           <h2 className="font-heading text-[clamp(1.75rem,4vw,3rem)] font-semibold leading-tight tracking-tight text-foreground">
-            {SERVICES_SECTION.title}{" "}
-            <span className="text-primary">{SERVICES_SECTION.titleAccent}</span>
+            {section.title}{" "}
+            <span className="text-primary">{section.titleAccent}</span>
           </h2>
 
-          {showIntro && (
+          {showIntro && section.description && (
             <p className="mx-auto mt-5 max-w-2xl text-sm font-light leading-relaxed text-muted-foreground min-[580px]:text-[15px] min-[580px]:leading-7">
-              {SERVICES_SECTION.description}
+              {section.description}
             </p>
           )}
         </motion.header>
 
-        <div className="flex flex-col gap-4 md:gap-5">
-          {services.map((service, index) => (
-            <ServiceRow key={service.href} service={service} index={index} />
-          ))}
-        </div>
+        {services.length > 0 ? (
+          <div className="flex flex-col gap-4 md:gap-5">
+            {services.map((service, index) => (
+              <ServiceRow key={service.id} service={service} index={index} />
+            ))}
+          </div>
+        ) : (
+          <div className="rounded-2xl border border-dashed border-border/70 bg-card/30 px-6 py-12 text-center">
+            <p className="text-sm text-muted-foreground">
+              No published services yet. Add services from the admin panel.
+            </p>
+          </div>
+        )}
 
         {(showViewAll || showCta) && (
           <motion.div
@@ -145,14 +154,14 @@ export function ServicesSection({
             transition={{ duration: 0.5, delay: 0.2, ease: EASE }}
             className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row"
           >
-            {showViewAll && (
-              <FancyButton variant="explore" href="/services">
-                View full service catalogue
+            {showViewAll && section.viewAllLabel && (
+              <FancyButton variant="explore" href={section.viewAllUrl || "/services"}>
+                {section.viewAllLabel}
               </FancyButton>
             )}
-            {showCta && (
-              <FancyButton variant="gradient" href="/contact">
-                Discuss your requirements
+            {showCta && section.ctaLabel && (
+              <FancyButton variant="gradient" href={section.ctaUrl || "/contact"}>
+                {section.ctaLabel}
               </FancyButton>
             )}
           </motion.div>

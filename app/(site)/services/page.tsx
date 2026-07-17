@@ -1,6 +1,11 @@
 import type { Metadata } from "next";
-import { ServicesSection } from "@/components/services/services-section";
 import { FancyButton } from "@/components/ui/fancy-button";
+import {
+  getServicesSection,
+  getPublishedServicesForSection,
+} from "@/lib/actions/services-section";
+import { ServicesSection } from "@/components/services/services-section";
+import { mapPublishedServices } from "@/lib/services-section-map";
 
 export const metadata: Metadata = {
   title: "Services",
@@ -8,10 +13,19 @@ export const metadata: Metadata = {
     "Explore Rajesh Kumar's expert consulting services spanning India-China business strategy, Chinese interpretation, market entry, corporate training, and risk advisory.",
 };
 
-export default function ServicesPage() {
+export default async function ServicesPage() {
+  const [section, services] = await Promise.all([
+    getServicesSection(),
+    getPublishedServicesForSection(),
+  ]);
+
   return (
     <main>
-      <ServicesSection showCta />
+      <ServicesSection
+        section={section}
+        services={mapPublishedServices(services)}
+        showCta
+      />
 
       <section className="border-t border-border/60 bg-card/30 pb-20 pt-4">
         <div className="mx-auto max-w-6xl px-5 min-[580px]:px-8">
@@ -26,7 +40,7 @@ export default function ServicesPage() {
             </div>
             <FancyButton
               variant="slide"
-              href="/contact"
+              href={section.ctaUrl || "/contact"}
               className="shrink-0"
             >
               Book a Call

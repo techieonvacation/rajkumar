@@ -23,9 +23,9 @@ function defaultHero(): Hero {
     subheadline: "",
     tagline: "",
     bullets: [],
-    cta1Label: "Schedule Consultation",
+    cta1Label: "Book a Call",
     cta1Url: "/contact",
-    cta2Label: "View Services",
+    cta2Label: "Explore Services",
     cta2Url: "/services",
     socialProof: "",
     image: "",
@@ -41,6 +41,12 @@ function defaultHero(): Hero {
 export async function getHero(): Promise<Hero> {
   const hero = await prisma.hero.findUnique({ where: { id: "singleton" } });
   return hero ?? defaultHero();
+}
+
+export async function getPublishedHero(): Promise<Hero | null> {
+  const hero = await prisma.hero.findUnique({ where: { id: "singleton" } });
+  if (!hero?.published) return null;
+  return hero;
 }
 
 export async function updateHero(data: Prisma.HeroUpdateInput) {

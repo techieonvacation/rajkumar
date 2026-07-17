@@ -167,6 +167,21 @@ model Service {
   @@index([featured])
 }
 
+model ServicesSection {
+  id            String   @id @default("singleton")
+  eyebrow       String   @default("What I Offer")
+  title         String   @default("Consulting")
+  titleAccent   String   @default("Services")
+  description   String   @default("")
+  viewAllLabel  String   @default("View full service catalogue")
+  viewAllUrl    String   @default("/services")
+  ctaLabel      String   @default("Discuss your requirements")
+  ctaUrl        String   @default("/contact")
+  published     Boolean  @default(true)
+  updatedAt     DateTime @updatedAt
+  createdAt     DateTime @default(now())
+}
+
 // ── Projects / Case Studies ───────────────────────────────────────────────────
 
 model Project {
