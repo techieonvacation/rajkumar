@@ -48,10 +48,10 @@ function MarqueeTrack({
 export function HeroMarquee({ items = DEFAULT_ITEMS }: HeroMarqueeProps) {
   return (
     <section
-      className="overflow-hidden bg-background py-10"
+      className="overflow-hidden bg-secondary py-10"
       aria-label="Featured highlights"
     >
-      <div className="flex w-max animate-marquee [animation-duration:25s] motion-reduce:animate-none">
+      <div className="inline-flex w-max animate-marquee motion-reduce:animate-none">
         <MarqueeTrack items={items} />
         <MarqueeTrack items={items} ariaHidden />
       </div>

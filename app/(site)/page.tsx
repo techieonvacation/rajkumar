@@ -26,7 +26,7 @@ export default async function HomePage() {
     <>
       <HeroSection hero={hero} stats={stats} />
       <HeroMarquee />
-      <ClientsMarquee />
+      {/* <ClientsMarquee /> */}
       <ServicesPreview />
       <ExperiencePreview />
       <TestimonialsSection />
