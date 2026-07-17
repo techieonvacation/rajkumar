@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { ArrowRight, MapPin, Calendar } from "lucide-react";
 import Link from "next/link";
+import { FancyButton } from "@/components/ui/fancy-button";
 
 interface Milestone {
   year: string;
@@ -192,13 +193,9 @@ export function ExperiencePreview() {
           transition={{ duration: 0.5, delay: 0.2 }}
           className="mt-10 flex justify-center"
         >
-          <Link
-            href="/experience"
-            className="inline-flex items-center gap-2 rounded-xl bg-muted px-6 py-3 text-[14px] text-muted-foreground transition-colors hover:bg-background hover:text-foreground"
-          >
+          <FancyButton variant="explore" href="/experience">
             View full career history
-            <ArrowRight className="size-4" />
-          </Link>
+          </FancyButton>
         </motion.div>
       </div>
     </section>

@@ -4,7 +4,8 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ArrowUpRight, Play } from "lucide-react";
+import { Play } from "lucide-react";
+import { FancyButton } from "@/components/ui/fancy-button";
 import type { Hero, Stat } from "@prisma/client";
 import { getStatIcon } from "@/lib/icon-map";
 import { HERO_ASSETS, HERO_SOCIAL_LINKS } from "@/lib/hero-assets";
@@ -200,19 +201,16 @@ export function HeroSection({ hero, stats }: HeroSectionProps) {
             <motion.div
               custom={3}
               variants={fadeUp}
-              className="mt-10 flex flex-wrap items-center gap-6"
+              className="mt-10 flex flex-wrap items-center gap-4"
             >
               {hero.cta1Label && (
-                <Link
+                <FancyButton
+                  variant="explore"
+                  size="lg"
                   href={hero.cta1Url || "/contact"}
-                  className="group inline-flex items-center justify-center gap-2.5 rounded-full bg-chart-3 px-[30px] py-5 text-base font-semibold leading-none text-background transition-all hover:brightness-110 hover:shadow-[0_8px_24px_oklch(82.10%_0.20_150.16/0.35)]"
                 >
                   {hero.cta1Label}
-                  <ArrowUpRight
-                    className="size-4 -rotate-45 transition-transform group-hover:rotate-0"
-                    strokeWidth={2.25}
-                  />
-                </Link>
+                </FancyButton>
               )}
 
               {hero.cta2Label && (

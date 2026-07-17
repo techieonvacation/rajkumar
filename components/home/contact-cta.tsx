@@ -1,8 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Phone, Mail, Clock, CheckCircle } from "lucide-react";
-import Link from "next/link";
+import { Phone, Clock, CheckCircle } from "lucide-react";
+import { FancyButton } from "@/components/ui/fancy-button";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
@@ -117,21 +117,12 @@ export function ContactCTA() {
             variants={fadeUp}
             className="flex flex-wrap justify-center gap-3"
           >
-            <Link
-              href="/contact"
-              className="inline-flex items-center gap-2.5 rounded-xl bg-primary px-7 py-4 text-[14px] font-medium text-primary-foreground transition-opacity hover:opacity-90"
-            >
-              <Phone className="size-4" strokeWidth={1.75} />
+            <FancyButton variant="gradient" size="lg" href="/contact">
               Book a Call
-            </Link>
-            <Link
-              href="/contact#message"
-              className="inline-flex items-center gap-2.5 rounded-xl px-7 py-4 text-[14px] font-medium text-white transition-colors hover:bg-white/5"
-              style={{ boxShadow: "inset 0 0 0 1px oklch(1 0 0 / 0.15)" }}
-            >
-              <Mail className="size-4" strokeWidth={1.75} />
+            </FancyButton>
+            <FancyButton variant="slide" href="/contact#message">
               Send a Message
-            </Link>
+            </FancyButton>
           </motion.div>
 
           {/* Trust signals */}
