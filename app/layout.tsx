@@ -1,22 +1,8 @@
 import type { Metadata } from "next";
-import { Sora, JetBrains_Mono } from "next/font/google";
+import { JetBrains_Mono } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 import "./globals.css";
-
-const sora = Sora({
-  variable: "--font-sans",
-  subsets: ["latin"],
-  display: "swap",
-  weight: ["300", "400", "500", "600", "700"],
-});
-
-const soraHeading = Sora({
-  variable: "--font-heading",
-  subsets: ["latin"],
-  display: "swap",
-  weight: ["400", "500", "600", "700"],
-});
 
 const jetbrainsMono = JetBrains_Mono({
   variable: "--font-mono",
@@ -80,7 +66,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`dark ${sora.variable} ${soraHeading.variable} ${jetbrainsMono.variable}`}
+      className={`dark ${jetbrainsMono.variable}`}
       suppressHydrationWarning
       data-scroll-behavior="smooth"
     >

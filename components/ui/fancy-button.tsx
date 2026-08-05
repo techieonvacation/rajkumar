@@ -95,8 +95,8 @@ const slideClasses = (size: FancyButtonSize, className?: string) =>
 const gradientVariants = cva(
   [
     "inline-flex items-center justify-center rounded-full border-0 font-medium text-primary-foreground shadow-lg",
-    "bg-linear-to-l from-primary via-[oklch(72%_0.16_165)] to-secondary",
-    "transition-all duration-500 hover:from-secondary hover:via-primary hover:to-[oklch(72%_0.16_165)]",
+    "bg-linear-to-l from-primary via-[oklch(54.10%_0.221_29.16)] to-secondary",
+    "transition-all duration-500 hover:from-secondary hover:via-primary hover:to-[oklch(43.81%_0.158_28.88)]",
     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
     "disabled:pointer-events-none disabled:opacity-50",
   ].join(" "),
@@ -189,7 +189,7 @@ function SlideContent({
       </span>
       <span
         className={cn(
-          "relative z-10 transition-all group-hover:text-primary-foreground",
+          "relative z-10 whitespace-nowrap transition-all group-hover:text-primary-foreground",
           slideTextPad[size],
           SLIDE_EASE
         )}

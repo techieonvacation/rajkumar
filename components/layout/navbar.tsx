@@ -15,9 +15,7 @@ import {
 } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { FancyButton } from "@/components/ui/fancy-button";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ThemeToggle } from "@/components/layout/theme-toggle";
-import { HERO_ASSETS } from "@/lib/hero-assets";
 import { cn } from "@/lib/utils";
 
 /* ─── Nav link definitions ───────────────────────────────────────────────────── */
@@ -75,8 +73,8 @@ const NAV_LINKS: NavLink[] = [
 
 export interface NavbarProfile {
   name: string;
-  tag: string;
-  avatar: string;
+  tag?: string;
+  avatar?: string;
 }
 
 interface NavbarProps {
@@ -85,8 +83,6 @@ interface NavbarProps {
 
 const DEFAULT_PROFILE: NavbarProfile = {
   name: "Rajesh Kumar",
-  tag: "India-China Consultant",
-  avatar: HERO_ASSETS.personFallback,
 };
 
 /* ─── Announcement bar ─────────────────────────────────────────────────────── */
@@ -106,9 +102,9 @@ function AnnouncementBar() {
   if (dismissed) return null;
 
   return (
-    <div className="relative bg-primary px-4 py-2 text-center text-primary-foreground">
-      <p className="text-[12px] font-medium">
-        <span className="mr-2 inline-block h-1.5 w-1.5 animate-pulse rounded-full bg-primary-foreground/70 align-middle" />
+    <div className="relative border-b border-primary-foreground/10 bg-primary px-4 py-2 text-center text-primary-foreground">
+      <p className="text-[12px] font-medium tracking-wide">
+        <span className="mr-2 inline-block h-1.5 w-1.5 animate-pulse rounded-full bg-primary-foreground align-middle" />
         Available for Q3 2026 engagements —{" "}
         <Link
           href="/contact"
@@ -128,53 +124,25 @@ function AnnouncementBar() {
   );
 }
 
-/* ─── Brand block (avatar + name + tag) ──────────────────────────────────────── */
+/* ─── Brand wordmark ─────────────────────────────────────────────────────────── */
 
 function NavBrand({
   profile,
   onClick,
-  compact = false,
 }: {
   profile: NavbarProfile;
   onClick?: () => void;
-  compact?: boolean;
 }) {
-  const initials = profile.name
-    .split(/\s+/)
-    .slice(0, 2)
-    .map((part) => part[0])
-    .join("")
-    .toUpperCase();
-
   return (
     <Link
       href="/"
       onClick={onClick}
-      className="group flex min-w-0 items-center gap-3 rounded-full outline-none focus-visible:ring-2 focus-visible:ring-primary/30"
+      className="group shrink-0 rounded-sm outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
       aria-label={`${profile.name} — Home`}
     >
-      <Avatar
-        size="lg"
-        className="size-11 shrink-0 ring-2 ring-border/60 transition-opacity group-hover:opacity-90"
-      >
-        {profile.avatar ? (
-          <AvatarImage src={profile.avatar} alt={profile.name} />
-        ) : null}
-        <AvatarFallback className="bg-muted font-heading text-sm font-semibold text-foreground">
-          {initials}
-        </AvatarFallback>
-      </Avatar>
-
-      {!compact && (
-        <div className="hidden min-w-0 flex-col leading-tight min-[480px]:flex">
-          <span className="truncate font-heading text-base font-bold tracking-tight text-foreground">
-            {profile.name}
-          </span>
-          <span className="truncate text-[10px] font-semibold uppercase tracking-[0.16em] text-primary">
-            {profile.tag}
-          </span>
-        </div>
-      )}
+      <span className="font-heading text-[15px] font-bold leading-none tracking-tight text-foreground transition-colors group-hover:text-primary min-[480px]:text-base lg:text-lg">
+        {profile.name}
+      </span>
     </Link>
   );
 }
@@ -251,7 +219,7 @@ function DesktopNavLinks({
                     if (ddTimer.current) clearTimeout(ddTimer.current);
                   }}
                   onMouseLeave={closeDD}
-                  className="absolute left-1/2 top-[calc(100%+12px)] z-50 w-72 -translate-x-1/2 rounded-2xl border border-border bg-popover p-1.5 shadow-xl"
+                  className="absolute left-1/2 top-[calc(100%+12px)] z-50 w-72 -translate-x-1/2 rounded-2xl border border-border bg-popover p-1.5 text-popover-foreground shadow-xl ring-1 ring-border/50"
                 >
                   {link.children!.map((child) => (
                     <Link
@@ -381,34 +349,39 @@ export function Navbar({ profile: profileProp }: NavbarProps) {
   const closeMobileMenu = React.useCallback(() => setMobileOpen(false), []);
 
   return (
-    <div className="sticky top-0 z-50 w-full">
+    <div className="sticky top-0 z-50 w-full border-b border-border bg-background">
       <AnnouncementBar />
 
-      <div className="px-4 pt-3 pb-2 min-[580px]:px-6 lg:px-8">
+      <div className="px-4 py-3 min-[580px]:px-6 lg:px-8">
         <header
           className={cn(
-            "mx-auto flex h-17 lg:h-20 max-w-[1320px] items-center gap-3 rounded-full border border-border/70",
-            "bg-card/95 px-3 shadow-[0_8px_32px_oklch(0%_0_0/0.28)] backdrop-blur-xl",
+            "mx-auto flex h-17 lg:h-20 max-w-[1320px] items-center gap-3 rounded-full",
+            "border border-border bg-background px-3",
             "min-[580px]:px-4 lg:gap-4 lg:px-5"
           )}
           role="banner"
         >
           <nav
-            className="flex w-full items-center gap-3"
+            className="flex w-full min-w-0 items-center gap-2 sm:gap-3"
             aria-label="Main navigation"
           >
             <NavBrand profile={profile} />
 
             <DesktopNavLinks links={NAV_LINKS} isActive={isActive} />
 
-            <div className="ml-auto flex items-center gap-2">
+            <div className="ml-auto flex shrink-0 items-center gap-1.5 sm:gap-2">
               <ThemeToggle className="hidden sm:inline-flex" />
 
               <FancyButton
                 variant="slide"
-                size="lg"
+                size="default"
                 href="/contact"
-                className="hidden min-w-[11.5rem] sm:inline-flex"
+                className={cn(
+                  "hidden shrink-0 sm:inline-flex",
+                  "max-w-none border border-border bg-card text-foreground",
+                  "shadow-none hover:border-primary hover:bg-primary hover:text-primary-foreground",
+                  "min-w-[12.75rem] md:min-w-[13.25rem]"
+                )}
               >
                 Book Consultation
               </FancyButton>
@@ -458,7 +431,7 @@ export function Navbar({ profile: profileProp }: NavbarProps) {
                     id="mobile-nav"
                     className="flex w-[min(82vw,340px)] flex-col gap-0 bg-background p-0"
                   >
-                    <SheetHeader className="border-b border-border/40 px-5 py-4">
+                    <SheetHeader className="border-b border-border border-t-4 border-t-primary bg-card px-5 py-4">
                       <div className="flex items-center justify-between">
                         <NavBrand profile={profile} onClick={closeMobileMenu} />
                         <SheetClose asChild>
@@ -509,7 +482,10 @@ export function Navbar({ profile: profileProp }: NavbarProps) {
                           variant="slide"
                           href="/contact"
                           onClick={closeMobileMenu}
-                          className="w-full min-w-0"
+                          className={cn(
+                            "w-full max-w-none border border-border bg-card",
+                            "hover:border-primary hover:bg-primary hover:text-primary-foreground"
+                          )}
                         >
                           Book Consultation
                         </FancyButton>

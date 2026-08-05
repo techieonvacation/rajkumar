@@ -60,7 +60,7 @@ function StatItem({ stat, animate }: { stat: Stat; animate: boolean }) {
   return (
     <div className="flex flex-col gap-2">
       <div className="flex items-center gap-2">
-        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-primary/15 text-primary ring-1 ring-primary/25">
           <Icon className="size-4" strokeWidth={1.75} />
         </div>
         <span className="font-heading text-2xl font-semibold tracking-tight tabular-nums text-foreground min-[580px]:text-3xl">
@@ -80,7 +80,7 @@ function StatItem({ stat, animate }: { stat: Stat; animate: boolean }) {
 
 function FloatCardBadge({ card }: { card: FloatCard }) {
   return (
-    <div className="rounded-2xl border border-border/70 bg-card/95 px-3.5 py-2.5 shadow-lg backdrop-blur-md min-[580px]:px-4 min-[580px]:py-3">
+    <div className="rounded-2xl border border-border bg-popover/95 px-3.5 py-2.5 text-popover-foreground shadow-lg shadow-black/25 backdrop-blur-md ring-1 ring-border/40 min-[580px]:px-4 min-[580px]:py-3">
       <div className="flex items-center gap-2.5">
         {card.icon && (
           <span className="text-lg leading-none" aria-hidden="true">
@@ -129,19 +129,12 @@ export function HeroSection({ hero, stats }: HeroSectionProps) {
   }, []);
 
   return (
-    <section
-      className="relative overflow-hidden bg-cover bg-center pt-[120px]"
-      style={{ backgroundImage: `url(${HERO_ASSETS.bg})` }}
-    >
+    <section className="hero-pinstripe relative overflow-hidden bg-background pt-[120px]">
+      <div className="pointer-events-none absolute inset-0 bg-background" aria-hidden="true" />
       <div
-        className="pointer-events-none absolute inset-0 bg-background"
+        className="pointer-events-none absolute inset-x-0 top-0 h-1 bg-primary"
         aria-hidden="true"
       />
-
-      <div className="pointer-events-none absolute inset-0" aria-hidden="true">
-        <div className="absolute -right-24 -top-24 h-[520px] w-[520px] rounded-full bg-primary/10 blur-3xl" />
-        <div className="absolute -left-20 top-1/3 h-[420px] w-[420px] rounded-full bg-primary/8 blur-3xl" />
-      </div>
 
       <div
         className="pointer-events-none absolute left-[18%] top-[24%] z-5 hidden animate-float-bob-x xl:block"
@@ -190,8 +183,8 @@ export function HeroSection({ hero, stats }: HeroSectionProps) {
             href={href}
             target="_blank"
             rel="noopener noreferrer"
-            className={`whitespace-nowrap text-sm font-medium transition-colors hover:text-foreground ${
-              index === 0 ? "text-foreground" : "text-muted-foreground"
+            className={`whitespace-nowrap text-sm font-medium transition-colors hover:text-primary ${
+              index === 0 ? "text-primary" : "text-muted-foreground"
             }`}
           >
             {label}
@@ -199,22 +192,22 @@ export function HeroSection({ hero, stats }: HeroSectionProps) {
         ))}
       </nav>
 
-      <div className="relative mx-auto max-w-[1320px] px-5 min-[580px]:px-8 lg:px-10 xl:px-[60px]">
-        <div className="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:items-stretch lg:gap-x-12 xl:gap-x-16 2xl:gap-x-20">
+      <div className="site-container">
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:items-center lg:gap-x-10 xl:gap-x-14 2xl:gap-x-16">
           <motion.div
             initial={{ opacity: 0, x: -32 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.7, delay: 0.15, ease: EASE }}
             className="relative z-9 order-2 flex items-end justify-center lg:order-1 lg:justify-start"
           >
-            <div className="relative w-full max-w-[600px] lg:max-w-[560px] xl:max-w-[620px]">
+            <div className="relative w-full max-w-md min-[580px]:max-w-lg lg:max-w-none">
               <Image
                 src={personSrc}
                 alt={hero.imageName || hero.imageRole || "Portrait"}
                 width={640}
                 height={760}
                 priority
-                sizes="(max-width: 1024px) 100vw, 620px"
+                sizes="(max-width: 1024px) 100vw, 50vw"
                 className="relative z-10 mx-auto block h-auto w-full max-h-[min(420px,58vh)] object-contain object-bottom min-[580px]:max-h-[min(480px,62vh)] lg:mx-0 lg:max-h-[min(580px,calc(100vh-220px))] xl:max-h-[min(640px,calc(100vh-200px))]"
               />
 
@@ -249,8 +242,9 @@ export function HeroSection({ hero, stats }: HeroSectionProps) {
           <motion.div
             initial="hidden"
             animate="visible"
-            className="relative order-1 flex flex-col justify-center lg:order-2 lg:py-8 lg:pl-10 xl:pl-14 2xl:pl-18"
+            className="relative order-1 flex w-full min-w-0 flex-col justify-center lg:order-2 lg:py-6 xl:py-10"
           >
+            <div className="w-full min-w-0 max-w-2xl lg:max-w-none">
             <motion.div custom={0} variants={fadeUp}>
               <span className="inline-flex items-center text-lg font-semibold leading-none text-foreground">
                 <Image
@@ -268,7 +262,7 @@ export function HeroSection({ hero, stats }: HeroSectionProps) {
             <motion.h1
               custom={1}
               variants={fadeUp}
-              className="mt-5 mb-[25px] font-heading text-4xl font-bold leading-[1.08] tracking-tight lg:text-6xl"
+              className="mt-5 mb-6 font-heading text-4xl font-bold leading-[1.08] tracking-tight min-[580px]:text-5xl lg:text-[3.25rem] lg:leading-[1.06] xl:text-6xl 2xl:text-[4rem]"
             >
               <span className="text-foreground">
                 {hero.headline}
@@ -282,7 +276,7 @@ export function HeroSection({ hero, stats }: HeroSectionProps) {
               {hero.headlineSuffix && (
                 <>
                   {" "}
-                  <span className="font-bold text-muted-foreground">
+                  <span className="font-bold text-foreground">
                     {hero.headlineSuffix}
                   </span>
                 </>
@@ -293,7 +287,7 @@ export function HeroSection({ hero, stats }: HeroSectionProps) {
               <motion.p
                 custom={1.5}
                 variants={fadeUp}
-                className="mb-4 max-w-[520px] text-base font-medium leading-relaxed text-primary"
+                className="mb-4 text-base font-medium uppercase tracking-[0.12em] leading-relaxed text-muted-foreground"
               >
                 {hero.tagline}
               </motion.p>
@@ -303,7 +297,7 @@ export function HeroSection({ hero, stats }: HeroSectionProps) {
               <motion.ul
                 custom={2}
                 variants={fadeUp}
-                className="mb-4 max-w-[520px] space-y-2.5"
+                className="mb-4 space-y-2.5"
               >
                 {hero.bullets.map((bullet) => (
                   <li
@@ -321,7 +315,7 @@ export function HeroSection({ hero, stats }: HeroSectionProps) {
               <motion.p
                 custom={2}
                 variants={fadeUp}
-                className="max-w-[520px] text-base font-normal leading-[26px] text-muted-foreground"
+                className="text-base font-normal leading-relaxed text-muted-foreground min-[580px]:leading-7"
               >
                 {hero.subheadline}
               </motion.p>
@@ -347,7 +341,7 @@ export function HeroSection({ hero, stats }: HeroSectionProps) {
                   href={hero.cta2Url || "/services"}
                   className="group inline-flex items-center gap-[9px] text-sm font-semibold leading-6 text-foreground transition-colors hover:text-primary"
                 >
-                  <span className="flex h-14 w-14 items-center justify-center rounded-full border border-border bg-card/80 shadow-sm transition-colors group-hover:border-primary/40">
+                  <span className="flex h-14 w-14 items-center justify-center rounded-full border border-border bg-popover/90 text-foreground shadow-md shadow-black/20 transition-colors group-hover:border-primary/50 group-hover:bg-card">
                     <Play className="size-4 fill-primary text-primary" strokeWidth={0} />
                   </span>
                   <span>{hero.cta2Label}</span>
@@ -359,11 +353,12 @@ export function HeroSection({ hero, stats }: HeroSectionProps) {
               <motion.p
                 custom={4}
                 variants={fadeUp}
-                className="mt-6 max-w-[520px] text-xs font-light leading-[26px] text-muted-foreground/70"
+                className="mt-6 text-xs font-light leading-relaxed text-muted-foreground/70 min-[580px]:text-sm"
               >
                 {hero.socialProof}
               </motion.p>
             )}
+            </div>
           </motion.div>
         </div>
 
@@ -373,7 +368,7 @@ export function HeroSection({ hero, stats }: HeroSectionProps) {
               initial={{ opacity: 0, y: 20 }}
               animate={statsVisible ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.6, delay: 0.1 }}
-              className="grid grid-cols-2 gap-x-6 gap-y-8 border-t border-border/60 pt-10 min-[580px]:pt-12 md:grid-cols-4"
+              className="grid grid-cols-2 gap-x-6 gap-y-8 border-t border-border pt-10 min-[580px]:pt-12 md:grid-cols-4"
             >
               {stats.map((stat) => (
                 <StatItem key={stat.id} stat={stat} animate={statsVisible} />
