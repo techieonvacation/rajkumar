@@ -17,77 +17,22 @@ import { Button } from "@/components/ui/button";
 import { FancyButton } from "@/components/ui/fancy-button";
 import { ThemeToggle } from "@/components/layout/theme-toggle";
 import { cn } from "@/lib/utils";
-
-/* ─── Nav link definitions ───────────────────────────────────────────────────── */
-
-interface NavLink {
-  label: string;
-  href: string;
-  children?: { label: string; href: string; description?: string }[];
-}
-
-const NAV_LINKS: NavLink[] = [
-  { label: "Home", href: "/" },
-  { label: "About", href: "/about" },
-  {
-    label: "Services",
-    href: "/services",
-    children: [
-      {
-        label: "Market Entry Strategy",
-        href: "/services/market-entry-strategy",
-        description: "Enter India or China markets with confidence",
-      },
-      {
-        label: "India-China Consulting",
-        href: "/services/india-china-consulting",
-        description: "End-to-end corridor advisory",
-      },
-      {
-        label: "Chinese Interpretation",
-        href: "/services/interpretation-translation",
-        description: "HSK-6 Mandarin for high-stakes meetings",
-      },
-      {
-        label: "Business Delegations",
-        href: "/services/business-delegation",
-        description: "Curated government & industry programs",
-      },
-      {
-        label: "Corporate Training",
-        href: "/services/corporate-training",
-        description: "Cross-cultural competency workshops",
-      },
-      {
-        label: "Risk & Compliance",
-        href: "/services/risk-compliance-advisory",
-        description: "Due diligence and geopolitical risk",
-      },
-    ],
-  },
-  { label: "Experience", href: "/experience" },
-  { label: "Projects", href: "/projects" },
-  { label: "Blog", href: "/blog" },
-  { label: "Contact", href: "/contact" },
-];
-
-export interface NavbarProfile {
-  name: string;
-  tag?: string;
-  avatar?: string;
-}
+import type { NavLink, NavbarProfile, SiteNavigation } from "@/lib/navigation-types";
+import { defaultSiteNavigation } from "@/lib/navigation-defaults";
 
 interface NavbarProps {
-  profile?: NavbarProfile;
+  navigation?: SiteNavigation;
 }
 
-const DEFAULT_PROFILE: NavbarProfile = {
-  name: "Rajesh Kumar",
-};
+const DEFAULT_NAVIGATION = defaultSiteNavigation();
 
 /* ─── Announcement bar ─────────────────────────────────────────────────────── */
 
-function AnnouncementBar() {
+function AnnouncementBar({
+  announcement,
+}: {
+  announcement: SiteNavigation["announcement"];
+}) {
   const [dismissed, setDismissed] = React.useState(false);
 
   React.useEffect(() => {
@@ -99,18 +44,18 @@ function AnnouncementBar() {
     setDismissed(true);
   };
 
-  if (dismissed) return null;
+  if (!announcement.enabled || dismissed) return null;
 
   return (
     <div className="relative border-b border-primary-foreground/10 bg-primary px-4 py-2 text-center text-primary-foreground">
       <p className="text-[12px] font-medium tracking-wide">
         <span className="mr-2 inline-block h-1.5 w-1.5 animate-pulse rounded-full bg-primary-foreground align-middle" />
-        Available for Q3 2026 engagements —{" "}
+        {announcement.text}{" "}
         <Link
-          href="/contact"
+          href={announcement.linkHref}
           className="underline underline-offset-2 hover:opacity-90"
         >
-          Book a free 30-min strategy call
+          {announcement.linkLabel}
         </Link>
       </p>
       <button
@@ -329,8 +274,9 @@ function MobileNavLink({
 
 /* ─── Main Navbar ────────────────────────────────────────────────────────────── */
 
-export function Navbar({ profile: profileProp }: NavbarProps) {
-  const profile = profileProp ?? DEFAULT_PROFILE;
+export function Navbar({ navigation: navigationProp }: NavbarProps) {
+  const navigation = navigationProp ?? DEFAULT_NAVIGATION;
+  const { profile, links, announcement, cta, mobile } = navigation;
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
@@ -356,7 +302,7 @@ export function Navbar({ profile: profileProp }: NavbarProps) {
         "bg-background/90 backdrop-blur-md supports-backdrop-filter:bg-background/80"
       )}
     >
-      <AnnouncementBar />
+      <AnnouncementBar announcement={announcement} />
 
       <div className="px-4 py-3 min-[580px]:px-6 lg:px-8">
         <header
@@ -376,7 +322,7 @@ export function Navbar({ profile: profileProp }: NavbarProps) {
           >
             <NavBrand profile={profile} />
 
-            <DesktopNavLinks links={NAV_LINKS} isActive={isActive} />
+            <DesktopNavLinks links={links} isActive={isActive} />
 
             <div className="ml-auto flex shrink-0 items-center gap-1.5 sm:gap-2">
               <ThemeToggle className="hidden sm:inline-flex" />
@@ -384,7 +330,7 @@ export function Navbar({ profile: profileProp }: NavbarProps) {
               <FancyButton
                 variant="slide"
                 size="default"
-                href="/contact"
+                href={cta.href}
                 className={cn(
                   "hidden shrink-0 sm:inline-flex",
                   "max-w-none border border-border bg-card text-foreground",
@@ -392,7 +338,7 @@ export function Navbar({ profile: profileProp }: NavbarProps) {
                   "min-w-[12.75rem] md:min-w-[13.25rem]"
                 )}
               >
-                Book Consultation
+                {cta.label}
               </FancyButton>
 
               <div className="xl:hidden">
@@ -460,7 +406,7 @@ export function Navbar({ profile: profileProp }: NavbarProps) {
                     <div className="mx-4 mt-3 flex items-center gap-2 rounded-xl bg-primary/10 px-4 py-2.5">
                       <span className="h-1.5 w-1.5 shrink-0 animate-pulse rounded-full bg-primary" />
                       <span className="text-[12px] font-medium text-primary">
-                        Available for Q3 2026 engagements
+                        {announcement.mobileText}
                       </span>
                     </div>
 
@@ -468,7 +414,7 @@ export function Navbar({ profile: profileProp }: NavbarProps) {
                       className="flex flex-1 flex-col gap-0.5 overflow-y-auto p-4"
                       aria-label="Mobile navigation"
                     >
-                      {NAV_LINKS.map((link) => (
+                      {links.map((link) => (
                         <MobileNavLink
                           key={link.href}
                           {...link}
@@ -482,25 +428,25 @@ export function Navbar({ profile: profileProp }: NavbarProps) {
                       <div className="flex items-center justify-between px-1">
                         <div className="flex items-center gap-1.5 text-sm font-medium text-muted-foreground">
                           <Globe className="size-3.5" strokeWidth={1.75} />
-                          HSK‑6
+                          {mobile.badgeText}
                         </div>
                         <ThemeToggle />
                       </div>
                       <SheetClose asChild>
                         <FancyButton
                           variant="slide"
-                          href="/contact"
+                          href={cta.href}
                           onClick={closeMobileMenu}
                           className={cn(
                             "w-full max-w-none border border-border bg-card",
                             "hover:border-primary hover:bg-primary hover:text-primary-foreground"
                           )}
                         >
-                          Book Consultation
+                          {cta.label}
                         </FancyButton>
                       </SheetClose>
                       <p className="text-center text-[11px] text-muted-foreground">
-                        Free 30-min strategy call · No commitment
+                        {mobile.footerNote}
                       </p>
                     </div>
                   </SheetContent>

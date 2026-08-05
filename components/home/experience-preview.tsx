@@ -1,10 +1,11 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowRight, MapPin, Calendar } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import { FancyButton } from "@/components/ui/fancy-button";
-import { sectionHeadingClass } from "@/lib/layout-classes";
+import { SectionHeader } from "@/components/home/section-header";
+import { siteContainerClass } from "@/lib/layout-classes";
 import { cn } from "@/lib/utils";
 
 interface Milestone {
@@ -57,143 +58,179 @@ const milestones: Milestone[] = [
   },
 ];
 
-const containerVariants = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.12 } },
-};
+const metrics = [
+  { value: "15+", label: "Years" },
+  { value: "$2B+", label: "Deal value" },
+  { value: "20+", label: "Fortune 500 clients" },
+  { value: "40+", label: "Delegations" },
+] as const;
 
-const itemVariants = {
-  hidden: { opacity: 0, x: -20 },
-  visible: {
-    opacity: 1,
-    x: 0,
-    transition: { duration: 0.5, ease: [0.25, 0.1, 0.25, 1] as [number, number, number, number] },
-  },
-};
+const EASE = [0.25, 0.1, 0.25, 1] as [number, number, number, number];
+
+function TimelineEntry({
+  milestone,
+  isLast,
+}: {
+  milestone: Milestone;
+  isLast: boolean;
+}) {
+  return (
+    <div
+      className={cn(
+        "group relative grid gap-5 md:grid-cols-[10.5rem_minmax(0,1fr)] md:gap-10 lg:grid-cols-[12rem_minmax(0,1fr)] lg:gap-12",
+        !isLast && "pb-10 md:pb-12"
+      )}
+    >
+      <div className="relative md:pr-5 lg:pr-6">
+        {!isLast && (
+          <span
+            className="absolute right-0 top-3.5 hidden h-full w-px bg-border md:block"
+            aria-hidden
+          />
+        )}
+        <span
+          className={cn(
+            "absolute right-0 top-3 z-1 hidden size-2 translate-x-1/2 rounded-full ring-4 ring-background md:block",
+            milestone.current ? "bg-primary" : "bg-muted-foreground/45"
+          )}
+          aria-hidden
+        />
+
+        <div className="flex w-full items-start gap-4 pl-5 md:w-auto md:flex-col md:items-end md:gap-3 md:pl-0 md:pt-0.5">
+          <span
+            className={cn(
+              "absolute left-0 top-1.5 size-2 rounded-full ring-4 ring-background md:hidden",
+              milestone.current ? "bg-primary" : "bg-muted-foreground/45"
+            )}
+            aria-hidden
+          />
+          <time
+            dateTime={milestone.year.replace(/\s/g, "")}
+            className={cn(
+              "shrink-0 text-[12px] font-medium uppercase tracking-[0.12em] min-[580px]:text-[13px]",
+              milestone.current ? "text-primary" : "text-muted-foreground"
+            )}
+          >
+            {milestone.year}
+          </time>
+          <span className="hidden text-[12px] text-muted-foreground md:inline">
+            {milestone.flag} {milestone.country}
+          </span>
+        </div>
+      </div>
+
+      <div
+        className={cn(
+          "relative border-l border-border/70 pl-5 md:border-0 md:pl-0",
+          milestone.current &&
+            "md:rounded-2xl md:border md:border-primary/20 md:bg-primary/4 md:p-6 lg:p-7"
+        )}
+      >
+        <span className="mb-2 inline-flex text-[12px] text-muted-foreground md:hidden">
+          {milestone.flag} {milestone.country}
+        </span>
+
+        <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-primary">
+          {milestone.company}
+        </p>
+        <h3 className="mt-1.5 font-heading text-[18px] font-semibold leading-snug tracking-tight text-foreground min-[580px]:text-[20px]">
+          {milestone.role}
+          {milestone.current && (
+            <span className="ml-2.5 inline-block align-middle text-[10px] font-semibold uppercase tracking-wider text-primary">
+              · Present
+            </span>
+          )}
+        </h3>
+        <p className="mt-3 max-w-2xl text-[14px] font-light leading-relaxed text-muted-foreground">
+          {milestone.achievement}
+        </p>
+      </div>
+    </div>
+  );
+}
 
 export function ExperiencePreview() {
   return (
     <section className="bg-card py-20 md:py-28">
-      <div className="mx-auto max-w-7xl px-5 min-[580px]:px-8">
-
-        {/* Header */}
+      <div className={siteContainerClass}>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.55 }}
-          className="mb-14 flex flex-col gap-4 md:flex-row md:items-end md:justify-between"
+          viewport={{ once: true, margin: "-40px" }}
+          transition={{ duration: 0.55, ease: EASE }}
+          className="mx-auto max-w-3xl"
         >
-          <div className="flex flex-col gap-4">
-            <span className="text-[11px] uppercase tracking-wider text-muted-foreground">
-              Career journey
-            </span>
-            <h2 className={cn(sectionHeadingClass, "text-[22px] min-[580px]:text-[28px]")}>
-              Professional Journey
-            </h2>
-            <p className="max-w-lg text-[14px] font-light leading-relaxed text-muted-foreground min-[580px]:text-[15px]">
-              15+ years spanning academia, industry associations, global
-              consulting, and independent practice.
-            </p>
-          </div>
-          <Link
-            href="/experience"
-            className="inline-flex shrink-0 items-center gap-1.5 text-[13px] font-medium text-primary hover:opacity-80 transition-opacity"
-          >
-            Full experience
-            <ArrowRight className="size-3.5" />
-          </Link>
+          <SectionHeader
+            align="center"
+            eyebrow="Experience"
+            title="A career across"
+            highlight="borders & boardrooms"
+            description="Academia, industry associations, global consulting, and independent practice — focused on the India–China corridor."
+          />
         </motion.div>
 
-        {/* Timeline */}
-        <div className="relative">
-          {/* Vertical spine */}
-          <div className="absolute left-4.75 top-3 bottom-3 w-px bg-linear-to-b from-primary/60 via-border/60 to-transparent md:left-5.75" />
-
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            className="flex flex-col gap-0"
-          >
-            {milestones.map((milestone, index) => (
-              <motion.div
-                key={milestone.year}
-                variants={itemVariants}
-                className="relative flex gap-7 pb-10 last:pb-0 md:gap-12"
-              >
-                {/* Dot */}
-                <div className="relative z-10 shrink-0 pt-1">
-                  {milestone.current ? (
-                    <div className="relative flex h-10 w-10 items-center justify-center rounded-full bg-primary md:h-12 md:w-12">
-                      {/* Pulse ring */}
-                      <span className="absolute inset-0 rounded-full bg-primary animate-ping opacity-20" />
-                      <span className="text-base leading-none">{milestone.flag}</span>
-                    </div>
-                  ) : (
-                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-background md:h-12 md:w-12">
-                      <div className="h-3 w-3 rounded-full bg-primary/50 ring-4 ring-primary/10 md:h-3.5 md:w-3.5" />
-                    </div>
-                  )}
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.55, delay: 0.08, ease: EASE }}
+          className="mx-auto mt-12 max-w-5xl md:mt-14"
+        >
+          <div className="overflow-hidden rounded-2xl border border-border/80 bg-background shadow-[0_1px_2px_oklch(0_0_0/4%)] md:rounded-3xl">
+            <div className="grid grid-cols-2 divide-x divide-y divide-border/60 border-b border-border/60 sm:grid-cols-4 sm:divide-y-0">
+              {metrics.map((m) => (
+                <div
+                  key={m.label}
+                  className="flex flex-col items-center justify-center gap-1 px-4 py-5 text-center sm:py-6"
+                >
+                  <span className="font-heading text-2xl font-semibold tracking-tight text-foreground tabular-nums min-[580px]:text-[28px]">
+                    {m.value}
+                  </span>
+                  <span className="text-[11px] uppercase tracking-wider text-muted-foreground">
+                    {m.label}
+                  </span>
                 </div>
+              ))}
+            </div>
 
-                {/* Content card */}
-                <div className="flex flex-1 flex-col gap-4 rounded-2xl bg-background p-5 min-[580px]:p-6">
-                  {/* Top row */}
-                  <div className="flex flex-wrap items-start justify-between gap-3">
-                    <div className="flex flex-col gap-1">
-                      <h3 className="font-heading text-[15px] font-medium tracking-tight text-foreground min-[580px]:text-[16px]">
-                        {milestone.role}
-                      </h3>
-                      <p className="text-[13px] font-semibold text-primary">
-                        {milestone.company}
-                      </p>
-                    </div>
-
-                    <div className="flex flex-col items-end gap-1.5">
-                      <div className="flex items-center gap-1.5">
-                        <Calendar className="size-3 text-muted-foreground/60" />
-                        <span className="text-[11px] uppercase tracking-wider text-muted-foreground">
-                          {milestone.year}
-                        </span>
-                      </div>
-                      <div className="flex items-center gap-1.5">
-                        <MapPin className="size-3 text-muted-foreground/60" />
-                        <span className="text-[12px] text-muted-foreground">
-                          {milestone.flag} {milestone.country}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Achievement */}
-                  <p className="text-[13px] font-light leading-relaxed text-muted-foreground">
-                    {milestone.achievement}
+            <div className="px-5 py-10 min-[580px]:px-8 min-[580px]:py-12 lg:px-12 lg:py-14">
+              <div className="mb-10 flex flex-col gap-4 border-b border-border/60 pb-8 sm:flex-row sm:items-end sm:justify-between">
+                <div>
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+                    Timeline
                   </p>
-
-                  {/* Current badge */}
-                  {milestone.current && (
-                    <div className="flex items-center gap-1.5">
-                      <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
-                      <span className="text-[11px] font-medium text-primary uppercase tracking-wider">
-                        Currently Active
-                      </span>
-                    </div>
-                  )}
+                  <p className="mt-2 font-heading text-lg font-medium text-foreground min-[580px]:text-xl">
+                    2008 — Present
+                  </p>
                 </div>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
+                <Link
+                  href="/experience"
+                  className="inline-flex items-center gap-1.5 text-[13px] font-medium text-primary transition-opacity hover:opacity-75"
+                >
+                  Full experience
+                  <ArrowUpRight className="size-3.5" strokeWidth={2} />
+                </Link>
+              </div>
 
-        {/* CTA */}
+              <div className="flex flex-col">
+                {milestones.map((milestone, index) => (
+                  <TimelineEntry
+                    key={milestone.year}
+                    milestone={milestone}
+                    isLast={index === milestones.length - 1}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+        </motion.div>
+
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          className="mt-10 flex justify-center"
+          transition={{ duration: 0.5, delay: 0.12, ease: EASE }}
+          className="mt-10 flex justify-center md:mt-12"
         >
           <FancyButton variant="explore" href="/experience">
             View full career history

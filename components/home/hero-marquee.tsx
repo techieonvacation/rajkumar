@@ -27,16 +27,16 @@ function MarqueeTrack({
       {items.map((label, index) => (
         <div
           key={`${label}-${index}`}
-          className="mx-[30px] flex shrink-0 items-center gap-4 whitespace-nowrap"
+          className="mx-6 flex shrink-0 items-center gap-4 whitespace-nowrap"
         >
           <Image
             src={HERO_ASSETS.sparkleSm}
             alt=""
-            width={20}
-            height={20}
-            className="shrink-0"
+            width={30}
+            height={30}
+            className="size-7.5 shrink-0 brightness-0 invert opacity-90"
           />
-          <span className="font-heading text-base font-semibold uppercase tracking-wide text-white md:text-lg">
+          <span className="font-heading text-base font-semibold uppercase tracking-wide text-white md:text-lg lg:text-xl">
             {label}
           </span>
         </div>
@@ -48,7 +48,7 @@ function MarqueeTrack({
 export function HeroMarquee({ items = DEFAULT_ITEMS }: HeroMarqueeProps) {
   return (
     <section
-      className="overflow-hidden bg-secondary py-10"
+      className="overflow-hidden bg-primary py-6"
       aria-label="Featured highlights"
     >
       <div className="inline-flex w-max animate-marquee motion-reduce:animate-none">

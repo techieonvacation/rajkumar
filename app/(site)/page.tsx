@@ -23,8 +23,16 @@ export default async function HomePage() {
 
   return (
     <>
-      {hero && <HeroSection hero={hero} stats={stats} />}
-      <HeroMarquee />
+      {hero && (
+        <>
+          <HeroSection hero={hero} stats={stats} />
+          <HeroMarquee
+            items={
+              hero.marqueeItems?.length ? hero.marqueeItems : undefined
+            }
+          />
+        </>
+      )}
       <ServicesPreview />
       <ExperiencePreview />
       {/* <TestimonialsSection /> */}

@@ -11,6 +11,7 @@ import { ThemeToggle } from "@/components/layout/theme-toggle";
 import {
   LayoutDashboard,
   Star,
+  Compass,
   Briefcase,
   FileText,
   MessageSquare,
@@ -39,6 +40,7 @@ const NAV_GROUPS: Array<{
     label: "Content",
     items: [
       { label: "Hero", href: "/admin/hero", icon: Star },
+      { label: "Navigation", href: "/admin/navigation", icon: Compass },
       { label: "Services", href: "/admin/services", icon: Briefcase },
       { label: "Blog", href: "/admin/blog", icon: FileText },
     ],

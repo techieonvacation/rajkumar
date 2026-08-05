@@ -2,6 +2,10 @@ import { PrismaClient } from "@prisma/client";
 import { PrismaNeonHttp } from "@prisma/adapter-neon";
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
+import {
+  DEFAULT_NAV_SEED,
+  defaultNavigationSettingsSeed,
+} from "../lib/navigation-defaults";
 
 function loadEnv() {
   const envPath = join(process.cwd(), ".env");
@@ -89,6 +93,7 @@ async function main() {
     cta2Label: "Explore Services",
     cta2Url: "/services",
     socialProof: "Trusted by Tata, Deloitte, FICCI & 200+ global enterprises",
+    marqueeItems: ["THE BEST SOLUTION", "INDIA–CHINA ADVISORY", "GLOBAL GROWTH"],
     imageName: "Rajesh Kumar",
     imageRole: "India-China Business Consultant",
     floatCards: [
@@ -107,6 +112,56 @@ async function main() {
     console.log("✓ Hero updated");
   } else {
     console.log("• Hero already has content — left untouched");
+  }
+
+  const heroRow =
+    existing ??
+    (await prisma.hero.findUnique({ where: { id: "singleton" } }));
+
+  const navSettings = await prisma.navigationSettings.findUnique({
+    where: { id: "singleton" },
+  });
+  if (!navSettings) {
+    const navSeed = defaultNavigationSettingsSeed();
+    await prisma.navigationSettings.create({
+      data: {
+        ...navSeed,
+        brandName: heroRow?.imageName || navSeed.brandName,
+        brandTag: heroRow?.imageRole || navSeed.brandTag,
+        avatar: heroRow?.image || navSeed.avatar,
+      },
+    });
+    console.log("✓ Navigation settings seeded");
+  } else {
+    console.log("• Navigation settings already exist — left untouched");
+  }
+
+  const navItemCount = await prisma.navItem.count({ where: { parentId: null } });
+  if (navItemCount === 0) {
+    for (const item of DEFAULT_NAV_SEED) {
+      await prisma.navItem.create({
+        data: {
+          label: item.label,
+          href: item.href,
+          order: item.order,
+          published: true,
+          children: item.children?.length
+            ? {
+                create: item.children.map((child) => ({
+                  label: child.label,
+                  href: child.href,
+                  description: child.description,
+                  order: child.order,
+                  published: true,
+                })),
+              }
+            : undefined,
+        },
+      });
+    }
+    console.log("✓ Navigation menu seeded");
+  } else {
+    console.log(`• ${navItemCount} nav items already exist — left untouched`);
   }
 
   const statCount = await prisma.stat.count();

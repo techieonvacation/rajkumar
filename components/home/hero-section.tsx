@@ -143,9 +143,10 @@ export function HeroSection({ hero, stats }: HeroSectionProps) {
             href={href}
             target="_blank"
             rel="noopener noreferrer"
-            className={`whitespace-nowrap text-sm font-medium transition-colors hover:text-primary ${
+            className={cn(
+              "whitespace-nowrap text-sm font-medium transition-colors hover:text-primary",
               index === 0 ? "text-primary" : "text-muted-foreground"
-            }`}
+            )}
           >
             {label}
           </Link>
@@ -166,7 +167,7 @@ export function HeroSection({ hero, stats }: HeroSectionProps) {
                 width={20}
                 height={20}
                 aria-hidden="true"
-                className="mr-2.5 inline-block h-5 w-5"
+                className="mr-2.5 inline-block h-5 w-5 opacity-80"
               />
               {greeting}
             </span>

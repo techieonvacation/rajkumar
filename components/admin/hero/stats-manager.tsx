@@ -167,7 +167,7 @@ export function StatsManager({ initial }: { initial: Stat[] }) {
   };
 
   return (
-    <div className="bg-card rounded-2xl p-5 min-[580px]:p-6">
+    <div className="rounded-2xl border border-border/80 bg-card p-5 shadow-sm min-[580px]:p-6">
       <div className="mb-5 flex items-center justify-between">
         <div>
           <h2 className="font-heading text-base font-semibold text-foreground">
@@ -194,7 +194,7 @@ export function StatsManager({ initial }: { initial: Stat[] }) {
             return (
               <li
                 key={s.id}
-                className="flex items-center gap-3 rounded-xl bg-background p-3"
+                className="flex items-center gap-3 rounded-xl border border-border/60 bg-background p-3"
               >
                 <div className="flex flex-col text-muted-foreground/40">
                   <GripVertical className="h-4 w-4" />
@@ -205,7 +205,9 @@ export function StatsManager({ initial }: { initial: Stat[] }) {
                 <div className="min-w-0 flex-1">
                   <p className="font-heading text-sm font-semibold text-foreground tabular-nums">
                     {s.value}
-                    <span style={{ color: "var(--accent-red)" }}>{s.suffix}</span>
+                    {s.suffix && (
+                      <span className="text-primary">{s.suffix}</span>
+                    )}
                   </p>
                   <p className="truncate text-xs text-muted-foreground">
                     {s.label}
@@ -253,7 +255,7 @@ export function StatsManager({ initial }: { initial: Stat[] }) {
                     type="button"
                     variant="ghost"
                     size="sm"
-                    className="h-8 w-8 p-0 text-red-500 hover:text-red-600"
+                    className="h-8 w-8 p-0 text-destructive hover:bg-destructive/10 hover:text-destructive"
                     onClick={() => setDeleteTarget(s)}
                     aria-label="Delete"
                   >

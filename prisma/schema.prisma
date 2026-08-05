@@ -69,9 +69,31 @@ model Hero {
   imageName      String   @default("")
   imageRole      String   @default("")
   floatCards     Json     @default("[]")
+  marqueeItems   String[] @default([])
   published      Boolean  @default(true)
   updatedAt      DateTime @updatedAt
   createdAt      DateTime @default(now())
+}
+
+// ── Navigation (header / navbar CMS) ───────────────────────────────────────────
+
+model NavigationSettings {
+  id                     String   @id @default("singleton")
+  brandName              String   @default("Rajesh Kumar")
+  brandTag               String   @default("")
+  avatar                 String   @default("")
+  announcementEnabled    Boolean  @default(true)
+  announcementText       String   @default("Available for Q3 2026 engagements —")
+  announcementLinkLabel  String   @default("Book a free 30-min strategy call")
+  announcementLinkHref   String   @default("/contact")
+  announcementMobileText String   @default("Available for Q3 2026 engagements")
+  ctaLabel               String   @default("Book Consultation")
+  ctaHref                String   @default("/contact")
+  mobileBadgeText        String   @default("HSK‑6")
+  mobileFooterNote       String   @default("Free 30-min strategy call · No commitment")
+  useCmsNav              Boolean  @default(true)
+  updatedAt              DateTime @updatedAt
+  createdAt              DateTime @default(now())
 }
 
 // ── Profile / About ───────────────────────────────────────────────────────────
@@ -520,18 +542,19 @@ model PageSeo {
 // ── Navigation ────────────────────────────────────────────────────────────────
 
 model NavItem {
-  id        String    @id @default(cuid())
-  label     String
-  href      String
-  icon      String    @default("")
-  external  Boolean   @default(false)
-  order     Int       @default(0)
-  parentId  String?
-  parent    NavItem?  @relation("NavChildren", fields: [parentId], references: [id])
-  children  NavItem[] @relation("NavChildren")
-  published Boolean   @default(true)
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  id          String    @id @default(cuid())
+  label       String
+  href        String
+  description String    @default("")
+  icon        String    @default("")
+  external    Boolean   @default(false)
+  order       Int       @default(0)
+  parentId    String?
+  parent      NavItem?  @relation("NavChildren", fields: [parentId], references: [id], onDelete: Cascade)
+  children    NavItem[] @relation("NavChildren")
+  published   Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 
   @@index([order])
   @@index([parentId])

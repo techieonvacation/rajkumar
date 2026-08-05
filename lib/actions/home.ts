@@ -33,6 +33,7 @@ function defaultHero(): Hero {
     imageName: "",
     imageRole: "",
     floatCards: [],
+    marqueeItems: [],
     published: true,
     createdAt: now,
     updatedAt: now,

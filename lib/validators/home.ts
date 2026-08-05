@@ -23,6 +23,7 @@ export const heroSchema = z.object({
   imageName: z.string().default(""),
   imageRole: z.string().default(""),
   floatCards: z.array(floatCardSchema).default([]),
+  marqueeItems: z.array(z.object({ value: z.string() })).default([]),
   published: z.boolean().default(true),
 });
 
