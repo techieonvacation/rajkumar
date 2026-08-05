@@ -7,6 +7,8 @@ import {
 } from "@/components/ui/accordion";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import { sectionHeadingClass } from "@/lib/layout-classes";
+import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "Frequently Asked Questions",
@@ -123,7 +125,7 @@ export default function FAQPage() {
         <p className="text-xs font-semibold tracking-widest uppercase text-primary">
           Questions
         </p>
-        <h1 className="section-heading text-3xl min-[580px]:text-4xl">
+        <h1 className={cn(sectionHeadingClass, "text-3xl min-[580px]:text-4xl")}>
           Frequently Asked Questions
         </h1>
         <p className="text-[14px] font-light leading-relaxed text-muted-foreground max-w-2xl">

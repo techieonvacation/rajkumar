@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
+import { sectionHeadingClass } from "@/lib/layout-classes";
+import { cn } from "@/lib/utils";
 
 /* ─── Data ───────────────────────────────────────────────────────── */
 
@@ -454,7 +456,7 @@ export default async function ProjectDetailPage(
 
       {/* Key Metrics */}
       <section className="space-y-5">
-        <h2 className="section-heading text-xl">Key Metrics</h2>
+        <h2 className={cn(sectionHeadingClass, "text-xl")}>Key Metrics</h2>
         <div className="grid grid-cols-2 min-[580px]:grid-cols-4 gap-4">
           {project.metrics.map((m) => (
             <div key={m.label} className="bg-card rounded-2xl p-5 space-y-1">
@@ -493,7 +495,7 @@ export default async function ProjectDetailPage(
 
       {/* Gallery / Work breakdown */}
       <section className="space-y-5">
-        <h2 className="section-heading text-xl">Work Breakdown</h2>
+        <h2 className={cn(sectionHeadingClass, "text-xl")}>Work Breakdown</h2>
         <div className="grid min-[580px]:grid-cols-2 gap-4">
           {project.gallery.map((item, i) => (
             <div
@@ -523,7 +525,7 @@ export default async function ProjectDetailPage(
       {/* Related projects */}
       {related.length > 0 && (
         <section className="space-y-5">
-          <h2 className="section-heading text-xl">Related Projects</h2>
+          <h2 className={cn(sectionHeadingClass, "text-xl")}>Related Projects</h2>
           <div className="grid min-[580px]:grid-cols-2 gap-5">
             {related.map((r) => (
               <Link

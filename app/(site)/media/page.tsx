@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, MapPin, Calendar, ZoomIn } from "lucide-react";
+import { sectionHeadingClass } from "@/lib/layout-classes";
+import { cn } from "@/lib/utils";
 
 /* ── Types ───────────────────────────────────────────────────────────────────── */
 
@@ -321,7 +323,7 @@ export default function MediaPage() {
           <p className="text-[13px] font-medium tracking-widest text-primary uppercase mb-3">
             Media &amp; Gallery
           </p>
-          <h1 className="section-heading text-3xl min-[580px]:text-4xl font-semibold mb-4">
+          <h1 className={cn(sectionHeadingClass, "text-3xl min-[580px]:text-4xl font-semibold mb-4")}>
             Events &amp; Highlights
           </h1>
           <p className="text-[14px] font-light leading-relaxed text-muted-foreground max-w-xl">

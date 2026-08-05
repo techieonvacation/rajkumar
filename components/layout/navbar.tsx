@@ -349,15 +349,24 @@ export function Navbar({ profile: profileProp }: NavbarProps) {
   const closeMobileMenu = React.useCallback(() => setMobileOpen(false), []);
 
   return (
-    <div className="sticky top-0 z-50 w-full border-b border-border bg-background">
+    <div
+      className={cn(
+        "sticky top-0 z-50 w-full",
+        "border-b border-border/70",
+        "bg-background/90 backdrop-blur-md supports-backdrop-filter:bg-background/80"
+      )}
+    >
       <AnnouncementBar />
 
       <div className="px-4 py-3 min-[580px]:px-6 lg:px-8">
         <header
           className={cn(
-            "mx-auto flex h-17 lg:h-20 max-w-[1320px] items-center gap-3 rounded-full",
-            "border border-border bg-background px-3",
-            "min-[580px]:px-4 lg:gap-4 lg:px-5"
+            "relative mx-auto flex container items-center gap-3 rounded-full px-3 py-3",
+            "min-[580px]:px-4 lg:gap-4 lg:px-5",
+            "border border-border bg-background/95 shadow-sm ring-1 ring-foreground/5",
+            "dark:border-foreground/15 dark:bg-card/35 dark:shadow-lg dark:shadow-black/40",
+            "before:pointer-events-none before:absolute before:inset-0 before:rounded-[inherit]",
+            "before:shadow-[inset_0_1px_0_oklch(1_0_0/0.06)] dark:before:shadow-[inset_0_1px_0_oklch(1_0_0/0.1)]"
           )}
           role="banner"
         >

@@ -1,0 +1,36 @@
+@import "tailwindcss";
+
+@theme inline {
+  --animate-marquee: marquee 25s linear infinite;
+  --animate-float-bob-y: float-bob-y 3s linear infinite;
+  --animate-float-bob-x: float-bob-x 3s linear infinite;
+}
+
+@keyframes marquee {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@keyframes float-bob-y {
+  0%,
+  100% {
+    transform: translateY(-30px);
+  }
+  50% {
+    transform: translateY(0);
+  }
+}
+
+@keyframes float-bob-x {
+  0%,
+  100% {
+    transform: translateX(30px);
+  }
+  50% {
+    transform: translateX(0);
+  }
+}

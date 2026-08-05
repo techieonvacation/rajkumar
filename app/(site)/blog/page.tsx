@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Calendar, Clock, ArrowRight, TrendingUp } from "lucide-react";
+import { sectionHeadingClass } from "@/lib/layout-classes";
+import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "Insights & Publications | Rajesh Kumar",
@@ -257,7 +259,7 @@ export default function BlogPage({
           <p className="text-[13px] font-medium tracking-widest text-primary uppercase mb-3">
             Knowledge Hub
           </p>
-          <h1 className="section-heading text-3xl min-[580px]:text-4xl font-semibold mb-4">
+          <h1 className={cn(sectionHeadingClass, "text-3xl min-[580px]:text-4xl font-semibold mb-4")}>
             Insights &amp; Publications
           </h1>
           <p className="text-[14px] font-light leading-relaxed text-muted-foreground max-w-xl">

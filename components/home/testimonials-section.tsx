@@ -3,6 +3,8 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Star, ChevronLeft, ChevronRight, Quote } from "lucide-react";
+import { sectionHeadingClass } from "@/lib/layout-classes";
+import { cn } from "@/lib/utils";
 
 interface Testimonial {
   quote: string;
@@ -181,7 +183,7 @@ export function TestimonialsSection() {
             <span className="text-[11px] uppercase tracking-wider text-muted-foreground">
               Client outcomes
             </span>
-            <h2 className="section-heading text-[22px] min-[580px]:text-[28px]">
+            <h2 className={cn(sectionHeadingClass, "text-[22px] min-[580px]:text-[28px]")}>
               What Clients Say
             </h2>
             <p className="max-w-lg text-[14px] font-light leading-relaxed text-muted-foreground min-[580px]:text-[15px]">

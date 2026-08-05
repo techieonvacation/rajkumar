@@ -3,6 +3,7 @@ import { JetBrains_Mono } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 import "./globals.css";
+import "./theme-extensions.css";
 
 const jetbrainsMono = JetBrains_Mono({
   variable: "--font-mono",

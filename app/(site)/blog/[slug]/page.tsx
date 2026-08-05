@@ -11,6 +11,8 @@ import {
   Twitter,
   ChevronRight,
 } from "lucide-react";
+import { sectionHeadingClass } from "@/lib/layout-classes";
+import { cn } from "@/lib/utils";
 
 /* ── Types ───────────────────────────────────────────────────────────────────── */
 
@@ -474,7 +476,7 @@ export default async function BlogPostPage({
 
         {/* Related articles */}
         <section className="mt-16 pt-10 border-t border-border/50">
-          <h2 className="section-heading text-[22px] mb-8">Related Articles</h2>
+          <h2 className={cn(sectionHeadingClass, "text-[22px] mb-8")}>Related Articles</h2>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {RELATED.map((rel) => (
               <Link key={rel.slug} href={`/blog/${rel.slug}`} className="group block">

@@ -3,6 +3,8 @@
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import type { Metadata } from "next";
+import { sectionHeadingClass } from "@/lib/layout-classes";
+import { cn } from "@/lib/utils";
 
 interface SkillBar {
   label: string;
@@ -230,7 +232,7 @@ export default function LanguagesPage() {
           <p className="text-[13px] font-medium tracking-widest text-primary uppercase mb-3">
             Language Proficiency
           </p>
-          <h1 className="section-heading text-3xl min-[580px]:text-4xl font-semibold mb-4">
+          <h1 className={cn(sectionHeadingClass, "text-3xl min-[580px]:text-4xl font-semibold mb-4")}>
             Languages
           </h1>
           <p className="text-[14px] font-light leading-relaxed text-muted-foreground max-w-xl">

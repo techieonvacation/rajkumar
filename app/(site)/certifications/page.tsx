@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Award, ExternalLink, CalendarDays, BadgeCheck } from "lucide-react";
+import { sectionHeadingClass } from "@/lib/layout-classes";
+import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "Certifications | Rajesh Kumar",
@@ -243,7 +245,7 @@ export default function CertificationsPage() {
           <p className="text-[13px] font-medium tracking-widest text-primary uppercase mb-3">
             Credentials
           </p>
-          <h1 className="section-heading text-3xl min-[580px]:text-4xl font-semibold mb-4">
+          <h1 className={cn(sectionHeadingClass, "text-3xl min-[580px]:text-4xl font-semibold mb-4")}>
             Certifications &amp; Qualifications
           </h1>
           <p className="text-[14px] font-light leading-relaxed text-muted-foreground max-w-xl">
@@ -271,7 +273,7 @@ export default function CertificationsPage() {
 
       {/* Featured */}
       <section className="px-4 max-w-7xl mx-auto mb-12">
-        <h2 className="section-heading text-[20px] mb-6">Highlighted Credentials</h2>
+        <h2 className={cn(sectionHeadingClass, "text-[20px] mb-6")}>Highlighted Credentials</h2>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {featured.map((cert) => (
             <CertCard key={cert.id} cert={cert} />
@@ -281,7 +283,7 @@ export default function CertificationsPage() {
 
       {/* All */}
       <section className="px-4 max-w-7xl mx-auto pb-24">
-        <h2 className="section-heading text-[20px] mb-6">Additional Certifications</h2>
+        <h2 className={cn(sectionHeadingClass, "text-[20px] mb-6")}>Additional Certifications</h2>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {rest.map((cert) => (
             <CertCard key={cert.id} cert={cert} />

@@ -69,7 +69,7 @@ const slideTextPad: Record<FancyButtonSize, string> = {
 const exploreClasses = (size: FancyButtonSize, className?: string) =>
   cn(
     "group relative isolate z-10 inline-flex items-center justify-center overflow-hidden rounded-full border-2 border-border/80",
-    "bg-card/80 text-foreground shadow-xl backdrop-blur-md",
+    "bg-card/80 text-foreground shadow-sm backdrop-blur-md",
     "font-medium lg:font-semibold",
     "transition-colors duration-700 hover:text-primary-foreground",
     "before:absolute before:-left-full before:-z-10 before:aspect-square before:w-full before:rounded-full before:bg-primary",

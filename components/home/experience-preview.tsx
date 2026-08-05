@@ -4,6 +4,8 @@ import { motion } from "framer-motion";
 import { ArrowRight, MapPin, Calendar } from "lucide-react";
 import Link from "next/link";
 import { FancyButton } from "@/components/ui/fancy-button";
+import { sectionHeadingClass } from "@/lib/layout-classes";
+import { cn } from "@/lib/utils";
 
 interface Milestone {
   year: string;
@@ -86,7 +88,7 @@ export function ExperiencePreview() {
             <span className="text-[11px] uppercase tracking-wider text-muted-foreground">
               Career journey
             </span>
-            <h2 className="section-heading text-[22px] min-[580px]:text-[28px]">
+            <h2 className={cn(sectionHeadingClass, "text-[22px] min-[580px]:text-[28px]")}>
               Professional Journey
             </h2>
             <p className="max-w-lg text-[14px] font-light leading-relaxed text-muted-foreground min-[580px]:text-[15px]">

@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { motion, AnimatePresence, type Variants } from "framer-motion";
 import { MapPin, Calendar, Award } from "lucide-react";
+import { sectionHeadingClass } from "@/lib/layout-classes";
+import { cn } from "@/lib/utils";
 
 /* ─── Data ───────────────────────────────────────────────────────── */
 
@@ -195,7 +197,7 @@ export default function ExperienceClient() {
         <p className="text-xs font-semibold tracking-widest uppercase text-primary">
           Career History
         </p>
-        <h1 className="section-heading text-3xl min-[580px]:text-4xl">Experience</h1>
+        <h1 className={cn(sectionHeadingClass, "text-3xl min-[580px]:text-4xl")}>Experience</h1>
         <p className="text-[14px] font-light leading-relaxed text-muted-foreground max-w-2xl">
           Fifteen years of corporate, consulting, and advisory roles spanning India,
           China, Singapore, and beyond — each building the bilateral expertise that

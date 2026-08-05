@@ -24,6 +24,7 @@ import {
   Link2Off,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import "./prosemirror.css";
 import { useCallback, useEffect } from "react";
 
 const lowlight = createLowlight(common);

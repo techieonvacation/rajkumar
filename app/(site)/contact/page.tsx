@@ -19,6 +19,8 @@ import {
 } from "lucide-react";
 import { contactSchema, type ContactFormValues } from "@/lib/validators/contact";
 import { submitContactForm } from "@/lib/actions/contact";
+import { sectionHeadingClass } from "@/lib/layout-classes";
+import { cn } from "@/lib/utils";
 
 /* ── Static data ─────────────────────────────────────────────────────────────── */
 
@@ -130,7 +132,7 @@ export default function ContactPage() {
           <p className="text-[13px] font-medium tracking-widest text-primary uppercase mb-3">
             Get in Touch
           </p>
-          <h1 className="section-heading text-3xl min-[580px]:text-4xl font-semibold mb-4">
+          <h1 className={cn(sectionHeadingClass, "text-3xl min-[580px]:text-4xl font-semibold mb-4")}>
             Start a Conversation
           </h1>
           <p className="text-[14px] font-light leading-relaxed text-muted-foreground max-w-xl">
@@ -147,7 +149,7 @@ export default function ContactPage() {
           <div className="space-y-6">
             {/* Primary contact */}
             <div className="bg-card rounded-2xl p-5 min-[580px]:p-8 space-y-5">
-              <h2 className="section-heading text-[18px]">Contact Information</h2>
+              <h2 className={cn(sectionHeadingClass, "text-[18px]")}>Contact Information</h2>
 
               <div className="space-y-4 pt-2">
                 <a
@@ -323,7 +325,7 @@ export default function ContactPage() {
 
           {/* ── Right: Contact form ── */}
           <div className="bg-card rounded-2xl p-5 min-[580px]:p-8">
-            <h2 className="section-heading text-[18px] mb-6">Send a Message</h2>
+            <h2 className={cn(sectionHeadingClass, "text-[18px] mb-6")}>Send a Message</h2>
             <p className="text-[14px] font-light leading-relaxed text-muted-foreground mb-8 -mt-2">
               Fill in the details below and Rajesh will personally respond within
               1-2 business days.

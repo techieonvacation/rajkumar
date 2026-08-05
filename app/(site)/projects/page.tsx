@@ -4,6 +4,8 @@ import { useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence, type Variants } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
+import { sectionHeadingClass } from "@/lib/layout-classes";
+import { cn } from "@/lib/utils";
 
 /* ─── Data ───────────────────────────────────────────────────────── */
 
@@ -179,7 +181,7 @@ export default function ProjectsPage() {
         <p className="text-xs font-semibold tracking-widest uppercase text-primary">
           Case Studies
         </p>
-        <h1 className="section-heading text-3xl min-[580px]:text-4xl">
+        <h1 className={cn(sectionHeadingClass, "text-3xl min-[580px]:text-4xl")}>
           Selected Projects
         </h1>
         <p className="text-[14px] font-light leading-relaxed text-muted-foreground max-w-2xl">

@@ -11,6 +11,8 @@ import {
   MessageSquare,
   ArrowRight,
 } from "lucide-react";
+import { sectionHeadingClass } from "@/lib/layout-classes";
+import { cn } from "@/lib/utils";
 
 /* ─── Animation helpers ──────────────────────────────────────────── */
 
@@ -124,7 +126,7 @@ export default function AboutClient() {
           <p className="text-xs font-semibold tracking-widest uppercase text-primary mb-4">
             About
           </p>
-          <h1 className="section-heading text-3xl min-[580px]:text-4xl mb-8">
+          <h1 className={cn(sectionHeadingClass, "text-3xl min-[580px]:text-4xl mb-8")}>
             Rajesh Kumar
           </h1>
         </motion.div>
@@ -185,7 +187,7 @@ export default function AboutClient() {
         viewport={{ once: true }}
         className="space-y-8"
       >
-        <motion.h2 variants={fadeUp} className="section-heading text-2xl">
+        <motion.h2 variants={fadeUp} className={cn(sectionHeadingClass, "text-2xl")}>
           Vision &amp; Philosophy
         </motion.h2>
 
@@ -231,7 +233,7 @@ export default function AboutClient() {
         viewport={{ once: true }}
         className="space-y-8"
       >
-        <motion.h2 variants={fadeUp} className="section-heading text-2xl">
+        <motion.h2 variants={fadeUp} className={cn(sectionHeadingClass, "text-2xl")}>
           Career Timeline
         </motion.h2>
 
@@ -284,7 +286,7 @@ export default function AboutClient() {
         viewport={{ once: true }}
         className="space-y-8"
       >
-        <motion.h2 variants={fadeUp} className="section-heading text-2xl">
+        <motion.h2 variants={fadeUp} className={cn(sectionHeadingClass, "text-2xl")}>
           Global Footprint
         </motion.h2>
         <motion.p variants={fadeUp} className="text-[14px] font-light leading-relaxed text-muted-foreground max-w-2xl">
@@ -316,7 +318,7 @@ export default function AboutClient() {
         viewport={{ once: true }}
         className="space-y-8"
       >
-        <motion.h2 variants={fadeUp} className="section-heading text-2xl">
+        <motion.h2 variants={fadeUp} className={cn(sectionHeadingClass, "text-2xl")}>
           Core Values
         </motion.h2>
         <div className="grid min-[580px]:grid-cols-2 gap-5">
@@ -352,7 +354,7 @@ export default function AboutClient() {
         viewport={{ once: true }}
         className="space-y-8"
       >
-        <motion.h2 variants={fadeUp} className="section-heading text-2xl">
+        <motion.h2 variants={fadeUp} className={cn(sectionHeadingClass, "text-2xl")}>
           Languages
         </motion.h2>
         <motion.div variants={stagger} className="bg-card rounded-2xl p-5 min-[580px]:p-8 space-y-7">

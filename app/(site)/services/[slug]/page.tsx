@@ -16,6 +16,8 @@ import {
   ChevronDown,
 } from "lucide-react";
 import ServiceAccordion from "./service-accordion";
+import { sectionHeadingClass } from "@/lib/layout-classes";
+import { cn } from "@/lib/utils";
 
 /* ─── Service data ───────────────────────────────────────────────── */
 
@@ -404,7 +406,7 @@ export default async function ServiceDetailPage(
             <p className="text-xs font-semibold tracking-widest uppercase text-primary mb-2">
               Service
             </p>
-            <h1 className="section-heading text-2xl min-[580px]:text-3xl">
+            <h1 className={cn(sectionHeadingClass, "text-2xl min-[580px]:text-3xl")}>
               {service.title}
             </h1>
             <p className="text-[15px] text-muted-foreground mt-3">{service.tagline}</p>
@@ -418,7 +420,7 @@ export default async function ServiceDetailPage(
         <div className="space-y-14">
           {/* Overview */}
           <section className="space-y-5">
-            <h2 className="section-heading text-xl">Overview</h2>
+            <h2 className={cn(sectionHeadingClass, "text-xl")}>Overview</h2>
             <p className="text-[14px] font-light leading-relaxed text-muted-foreground">
               {service.overview}
             </p>
@@ -426,7 +428,7 @@ export default async function ServiceDetailPage(
 
           {/* Benefits */}
           <section className="space-y-5">
-            <h2 className="section-heading text-xl">Key Benefits</h2>
+            <h2 className={cn(sectionHeadingClass, "text-xl")}>Key Benefits</h2>
             <div className="grid min-[580px]:grid-cols-2 gap-3">
               {service.benefits.map((b) => (
                 <div key={b} className="flex items-start gap-2.5 bg-card rounded-xl p-4">
@@ -444,7 +446,7 @@ export default async function ServiceDetailPage(
 
           {/* Process */}
           <section className="space-y-5">
-            <h2 className="section-heading text-xl">Our Process</h2>
+            <h2 className={cn(sectionHeadingClass, "text-xl")}>Our Process</h2>
             <div className="space-y-4">
               {service.process.map((step) => (
                 <div
@@ -470,7 +472,7 @@ export default async function ServiceDetailPage(
 
           {/* Deliverables */}
           <section className="space-y-5">
-            <h2 className="section-heading text-xl">Deliverables</h2>
+            <h2 className={cn(sectionHeadingClass, "text-xl")}>Deliverables</h2>
             <div className="bg-card rounded-2xl p-5 min-[580px]:p-8">
               <ul className="space-y-2.5">
                 {service.deliverables.map((d) => (
@@ -488,7 +490,7 @@ export default async function ServiceDetailPage(
 
           {/* FAQs */}
           <section className="space-y-5">
-            <h2 className="section-heading text-xl">Frequently Asked Questions</h2>
+            <h2 className={cn(sectionHeadingClass, "text-xl")}>Frequently Asked Questions</h2>
             <ServiceAccordion faqs={service.faqs} />
           </section>
         </div>
