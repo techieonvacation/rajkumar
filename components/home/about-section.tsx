@@ -1,6 +1,7 @@
 import { Fragment } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { FancyButton } from "@/components/ui/fancy-button";
 import { SectionTitle } from "@/components/home/template/section-title";
 import { CountUp } from "@/components/home/template/count-up";
 import { ABOUT_CLIENT_IMAGES, ABOUT_POINTS } from "@/lib/home-sections";
@@ -128,10 +129,9 @@ export function AboutSection() {
                   </div>
                 </div>
                 <div className="about-two__btn-box">
-                  <Link href="/about" className="thm-btn">
+                  <FancyButton variant="explore" href="/about">
                     Learn More
-                    <span className="tg-icon-right-arrow" />
-                  </Link>
+                  </FancyButton>
                 </div>
               </div>
             </div>

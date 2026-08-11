@@ -1,5 +1,5 @@
 import Image from "next/image";
-import Link from "next/link";
+import { FancyButton } from "@/components/ui/fancy-button";
 import { SectionTitle } from "@/components/home/template/section-title";
 import { ProgressBar } from "@/components/home/template/progress-bar";
 import { SlideInRight } from "@/components/home/template/slide-in-right";
@@ -41,10 +41,9 @@ export function WhyChooseSection() {
               </ul>
               <div className="why-choose-one__btn-and-client-info">
                 <div className="why-choose-one__btn-box">
-                  <Link href="/about" className="thm-btn">
+                  <FancyButton variant="explore" href="/about">
                     About Us
-                    <span className="tg-icon-right-arrow" />
-                  </Link>
+                  </FancyButton>
                 </div>
                 <div className="why-choose-one__client-box">
                   <div className="why-choose-one__client-img">

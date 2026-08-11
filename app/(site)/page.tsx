@@ -2,15 +2,15 @@ import type { Metadata } from "next";
 import { HeroSection } from "@/components/home/hero-section";
 import { HeroMarquee } from "@/components/home/hero-marquee";
 import { AboutSection } from "@/components/home/about-section";
+import { CounterSection } from "@/components/home/counter-section";
 import { ServicesSection } from "@/components/home/services-section";
+import { WorksSection } from "@/components/home/works-section";
 import { WhyChooseSection } from "@/components/home/why-choose-section";
 import { ProcessSection } from "@/components/home/process-section";
 import { PortfolioSection } from "@/components/home/portfolio-section";
-import { ContactSection } from "@/components/home/contact-section";
-import { CounterSection } from "@/components/home/counter-section";
-import { WorksSection } from "@/components/home/works-section";
 import { TestimonialsSection } from "@/components/home/testimonials-section";
 import { BlogSection } from "@/components/home/blog-section";
+// import { ContactSection } from "@/components/home/contact-section";
 import { getPublishedHero, getPublishedStats } from "@/lib/actions/home";
 import {
   organizationSchema,
@@ -60,13 +60,15 @@ export default async function HomePage() {
       <AboutSection />
       <CounterSection />
       <ServicesSection />
+      <WorksSection />
       <WhyChooseSection />
       <ProcessSection />
       <PortfolioSection />
-      <WorksSection />
-      <ContactSection />
       <TestimonialsSection />
       <BlogSection />
+      {/* Reserved for the dedicated contact page — its layout duplicates the
+          testimonial section and the footer already carries the Get In Touch CTA.
+      <ContactSection /> */}
     </>
   );
 }

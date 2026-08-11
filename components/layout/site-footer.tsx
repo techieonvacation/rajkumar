@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { FancyButton } from "@/components/ui/fancy-button";
 import { Reveal } from "@/components/home/template/reveal";
 import { NewsletterForm } from "@/components/home/template/newsletter-form";
 import {
@@ -63,10 +64,14 @@ export function SiteFooter() {
               </p>
             </div>
             <div className="site-footer__btn-box">
-              <Link href="/contact" className="site-footer__btn">
+              <FancyButton
+                variant="explore"
+                size="lg"
+                href="/contact"
+                className="px-10 py-4"
+              >
                 Get In Touch
-                <span className="tg-icon-right-arrow" />
-              </Link>
+              </FancyButton>
             </div>
           </div>
         </div>

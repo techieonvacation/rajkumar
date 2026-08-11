@@ -3,6 +3,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
+import { FancyButton } from "@/components/ui/fancy-button";
 import {
   quickContactSchema,
   type QuickContactValues,
@@ -118,10 +119,14 @@ export function ContactForm() {
           />
         </div>
         <div className="contact-one__btn-box">
-          <button type="submit" className="thm-btn" disabled={isSubmitting}>
-            <span>{isSubmitting ? "Sending..." : "Submit Now"}</span>
-            <i className="tg-icon-right-arrow" />
-          </button>
+          <FancyButton
+            variant="gradient"
+            size="lg"
+            type="submit"
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? "Sending..." : "Submit Now"}
+          </FancyButton>
         </div>
       </div>
     </form>

@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { FancyButton } from "@/components/ui/fancy-button";
 import { Autoplay, Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { SectionTitle } from "@/components/home/template/section-title";
@@ -88,10 +89,9 @@ export function BlogSection() {
                   </h3>
                   <p className="blog-one__text">{BLOG_EXCERPT}</p>
                   <div className="blog-one__btn-box">
-                    <Link href="/blog" className="thm-btn">
+                    <FancyButton variant="slide" size="sm" href="/blog">
                       Read More
-                      <span className="tg-icon-right-arrow" />
-                    </Link>
+                    </FancyButton>
                   </div>
                 </div>
               </div>
