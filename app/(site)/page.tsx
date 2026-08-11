@@ -7,6 +7,10 @@ import { WhyChooseSection } from "@/components/home/why-choose-section";
 import { ProcessSection } from "@/components/home/process-section";
 import { PortfolioSection } from "@/components/home/portfolio-section";
 import { ContactSection } from "@/components/home/contact-section";
+import { CounterSection } from "@/components/home/counter-section";
+import { WorksSection } from "@/components/home/works-section";
+import { TestimonialsSection } from "@/components/home/testimonials-section";
+import { BlogSection } from "@/components/home/blog-section";
 import { getPublishedHero, getPublishedStats } from "@/lib/actions/home";
 import {
   organizationSchema,
@@ -54,11 +58,15 @@ export default async function HomePage() {
       )}
 
       <AboutSection />
+      <CounterSection />
       <ServicesSection />
       <WhyChooseSection />
       <ProcessSection />
       <PortfolioSection />
+      <WorksSection />
       <ContactSection />
+      <TestimonialsSection />
+      <BlogSection />
     </>
   );
 }

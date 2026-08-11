@@ -1,7 +1,7 @@
 import * as React from "react";
 import type { Metadata } from "next";
 import { Navbar } from "@/components/layout/navbar";
-import { Footer } from "@/components/layout/footer";
+import { SiteFooter } from "@/components/layout/site-footer";
 import { getSiteNavigation } from "@/lib/actions/navigation";
 import "./template-sections.css";
 
@@ -29,7 +29,7 @@ export default async function SiteLayout({
         {children}
       </main>
 
-      <Footer />
+      <SiteFooter />
     </div>
   );
 }
