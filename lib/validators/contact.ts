@@ -40,3 +40,14 @@ export const contactSchema = z.object({
 });
 
 export type ContactFormValues = z.infer<typeof contactSchema>;
+
+export const quickContactSchema = contactSchema
+  .pick({ name: true, email: true, phone: true, message: true })
+  .extend({
+    subject: z
+      .string()
+      .min(2, "Subject must be at least 2 characters")
+      .max(100, "Subject must be under 100 characters"),
+  });
+
+export type QuickContactValues = z.infer<typeof quickContactSchema>;

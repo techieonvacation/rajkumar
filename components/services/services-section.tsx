@@ -6,8 +6,10 @@ import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import type { ServicesSection } from "@prisma/client";
 import { FancyButton } from "@/components/ui/fancy-button";
+import { SectionHeading } from "@/components/ui/section-heading";
 import { HERO_ASSETS } from "@/lib/hero-assets";
 import type { ServiceRowItem } from "@/lib/services-section-map";
+import { sectionHeaderSpacingClass } from "@/lib/layout-classes";
 import { cn } from "@/lib/utils";
 
 const EASE = [0.25, 0.1, 0.25, 1] as [number, number, number, number];
@@ -100,37 +102,13 @@ export function ServicesSection({
       </div>
 
       <div className="relative mx-auto max-w-6xl px-5 min-[580px]:px-8">
-        <motion.header
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.55, ease: EASE }}
-          className="mx-auto mb-14 max-w-3xl text-center md:mb-16"
-        >
-          <div className="mb-5 inline-flex items-center justify-center gap-2">
-            <Image
-              src={HERO_ASSETS.sparkleSm}
-              alt=""
-              width={18}
-              height={18}
-              className="shrink-0"
-            />
-            <span className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">
-              {section.eyebrow}
-            </span>
-          </div>
-
-          <h2 className="font-heading text-[clamp(1.75rem,4vw,3rem)] font-semibold leading-tight tracking-tight text-foreground">
-            {section.title}{" "}
-            <span className="text-primary">{section.titleAccent}</span>
-          </h2>
-
-          {showIntro && section.description && (
-            <p className="mx-auto mt-5 max-w-2xl text-sm font-light leading-relaxed text-muted-foreground min-[580px]:text-[15px] min-[580px]:leading-7">
-              {section.description}
-            </p>
-          )}
-        </motion.header>
+        <SectionHeading
+          eyebrow={section.eyebrow}
+          title={section.title}
+          titleAccent={section.titleAccent}
+          description={showIntro ? section.description : undefined}
+          className={sectionHeaderSpacingClass}
+        />
 
         {services.length > 0 ? (
           <div className="flex flex-col gap-4 md:gap-5">

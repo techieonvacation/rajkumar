@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { getSiteNavigation } from "@/lib/actions/navigation";
+import "./template-sections.css";
 
 export const metadata: Metadata = {
   // Individual pages override specific fields; base values come from root layout.tsx

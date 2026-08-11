@@ -1,351 +1,253 @@
 import * as React from "react";
+import Image from "next/image";
 import Link from "next/link";
+import { Facebook, Linkedin, MessageCircle, PhoneCall } from "lucide-react";
 import {
-  Linkedin,
-  Twitter,
-  Youtube,
-  MessageCircle,
-  Mail,
-  Phone,
-  MapPin,
-  ExternalLink,
-  ArrowUpRight,
-} from "lucide-react";
+  RESOURCE_LINKS,
+  SITE_PROFILE,
+  USEFUL_LINKS,
+} from "@/lib/site-profile";
+import { siteContainerClass } from "@/lib/layout-classes";
 import { cn } from "@/lib/utils";
 
-/* ─── Data ───────────────────────────────────────────────────────────────────── */
+const FOOTER_SURFACE = "oklch(15.5% 0 0)";
+const FOOTER_BAR_SURFACE = "oklch(11.5% 0 0)";
 
-const SERVICES_LINKS = [
-  { label: "Market Entry Strategy", href: "/services#market-entry" },
-  { label: "China Business Setup", href: "/services#business-setup" },
-  { label: "Cross-Border Trade", href: "/services#cross-border-trade" },
-  { label: "Regulatory & Compliance", href: "/services#regulatory" },
-  { label: "Business Delegation", href: "/services#delegation" },
-  { label: "Translation & Interpretation", href: "/services#translation" },
-  { label: "Corporate Training", href: "/services#training" },
+const SOCIALS = [
+  { label: "Facebook", href: "https://facebook.com", icon: Facebook },
+  { label: "LinkedIn", href: SITE_PROFILE.linkedin, icon: Linkedin },
+  { label: "WhatsApp", href: SITE_PROFILE.whatsapp, icon: MessageCircle },
 ];
 
-const QUICK_LINKS = [
-  { label: "About", href: "/about" },
-  { label: "Experience", href: "/experience" },
-  { label: "Projects", href: "/projects" },
-  { label: "Blog", href: "/blog" },
-  { label: "Contact", href: "/contact" },
-  { label: "FAQ", href: "/faq" },
-];
-
-const SOCIAL_LINKS = [
+const GALLERY = [
   {
-    label: "LinkedIn",
-    href: "https://linkedin.com/in/rajeshkumar",
-    icon: Linkedin,
-    handle: "rajeshkumar",
+    src: "https://images.unsplash.com/photo-1524250502761-1ac6f2e30d43?auto=format&fit=crop&w=300&q=80",
+    alt: "Business delegation meeting",
   },
   {
-    label: "Twitter / X",
-    href: "https://twitter.com/rajeshkumar",
-    icon: Twitter,
-    handle: "@rajeshkumar",
+    src: "https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=300&q=80",
+    alt: "Cross-border strategy session",
   },
   {
-    label: "YouTube",
-    href: "https://youtube.com/@rajeshkumar",
-    icon: Youtube,
-    handle: "Rajesh Kumar Insights",
+    src: "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=300&q=80",
+    alt: "Advisory workshop",
   },
   {
-    label: "WeChat",
-    href: "#wechat",
-    icon: MessageCircle,
-    handle: "RajeshKumar_CN",
-    isWechat: true,
+    src: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=300&q=80",
+    alt: "Conference keynote",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1560264280-88b68371db39?auto=format&fit=crop&w=300&q=80",
+    alt: "Trade exhibition floor",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=300&q=80",
+    alt: "Client negotiation",
   },
 ];
 
-const CONTACT_INFO = [
-  {
-    icon: Mail,
-    label: "Email",
-    value: "rajesh@rajeshkumar.com",
-    href: "mailto:rajesh@rajeshkumar.com",
-  },
-  {
-    icon: Phone,
-    label: "Phone / WhatsApp",
-    value: "+91 98765 43210",
-    href: "https://wa.me/919876543210",
-  },
-  {
-    icon: MessageCircle,
-    label: "WeChat ID",
-    value: "RajeshKumar_CN",
-    href: "#wechat",
-  },
-  {
-    icon: MapPin,
-    label: "Based In",
-    value: "New Delhi, India — Beijing, China",
-    href: undefined,
-  },
-];
-
-/* ─── Helpers ────────────────────────────────────────────────────────────────── */
+function BrandMark() {
+  return (
+    <svg
+      viewBox="0 0 48 48"
+      className="size-12 shrink-0"
+      fill="none"
+      aria-hidden="true"
+    >
+      <path
+        d="M40 24a16 16 0 1 1-8.6-14.2"
+        stroke="var(--primary)"
+        strokeWidth="4.5"
+        strokeLinecap="round"
+      />
+      <path
+        d="M24 24 39 11m0 0h-9.5M39 11v9.5"
+        stroke="var(--primary)"
+        strokeWidth="4.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
 
 function FooterHeading({ children }: { children: React.ReactNode }) {
   return (
-    <h3 className="mb-5 font-heading text-[13px] font-semibold uppercase tracking-widest text-white/50">
+    <h3 className="mb-7 font-heading text-[21px] font-bold tracking-tight text-white">
       {children}
     </h3>
   );
 }
 
-function FooterLink({
-  href,
-  children,
-  external = false,
-  className,
+function LinkColumn({
+  heading,
+  links,
 }: {
-  href: string;
-  children: React.ReactNode;
-  external?: boolean;
-  className?: string;
+  heading: string;
+  links: readonly { label: string; href: string }[];
 }) {
-  const commonClass = cn(
-    "inline-flex items-center gap-1 text-[13.5px] font-light text-white/60",
-    "transition-colors hover:text-white",
-    "outline-none focus-visible:rounded focus-visible:ring-2 focus-visible:ring-white/30",
-    className
-  );
-
-  if (external) {
-    return (
-      <a
-        href={href}
-        target="_blank"
-        rel="noopener noreferrer"
-        className={commonClass}
-        aria-label={`${children} (opens in new tab)`}
-      >
-        {children}
-        <ExternalLink className="size-3 opacity-50" />
-      </a>
-    );
-  }
-
   return (
-    <Link href={href} className={commonClass}>
-      {children}
-    </Link>
-  );
-}
-
-/* ─── Columns ────────────────────────────────────────────────────────────────── */
-
-function BrandColumn() {
-  return (
-    <div className="flex flex-col gap-5">
-      {/* Logo */}
-      <Link
-        href="/"
-        className="group flex items-center gap-3 w-fit outline-none focus-visible:ring-2 focus-visible:ring-white/30 rounded-xl"
-        aria-label="Rajesh Kumar — Home"
-      >
-        <div
-          className={cn(
-            "flex h-10 w-10 shrink-0 items-center justify-center rounded-xl",
-            "bg-white/10 text-white",
-            "font-heading text-base font-semibold tracking-tight",
-            "transition-colors group-hover:bg-white/15"
-          )}
-          aria-hidden="true"
-        >
-          RK
-        </div>
-        <div className="flex flex-col leading-none">
-          <span className="font-heading text-base font-semibold tracking-tight text-white">
-            Rajesh Kumar
-          </span>
-        </div>
-      </Link>
-
-      {/* Tagline */}
-      <p className="max-w-[240px] text-[13.5px] font-light leading-relaxed text-white/55">
-        Bridging two of the world&rsquo;s largest economies. 15+ years of
-        experience in India-China business strategy and cross-border growth.
-      </p>
-
-      {/* Social icons */}
-      <div className="flex items-center gap-2" role="list" aria-label="Social media links">
-        {SOCIAL_LINKS.map(({ label, href, icon: Icon, isWechat }) => (
-          <div key={label} role="listitem">
-            <a
+    <nav aria-label={heading}>
+      <FooterHeading>{heading}</FooterHeading>
+      <ul className="flex flex-col gap-[18px]" role="list">
+        {links.map(({ label, href }) => (
+          <li key={href}>
+            <Link
               href={href}
-              target={isWechat ? undefined : "_blank"}
-              rel={isWechat ? undefined : "noopener noreferrer"}
-              aria-label={label}
               className={cn(
-                "flex h-9 w-9 items-center justify-center rounded-xl",
-                "bg-white/8 text-white/60",
-                "transition-colors hover:bg-white/15 hover:text-white",
-                "outline-none focus-visible:ring-2 focus-visible:ring-white/30"
+                "group inline-flex items-center gap-3 text-[15px] font-light text-white/60",
+                "transition-colors duration-300 hover:text-primary",
+                "outline-none focus-visible:rounded focus-visible:ring-2 focus-visible:ring-primary/40"
               )}
             >
-              <Icon className="size-[17px]" strokeWidth={1.75} aria-hidden="true" />
-            </a>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function ServicesColumn() {
-  return (
-    <div>
-      <FooterHeading>Services</FooterHeading>
-      <ul className="flex flex-col gap-2.5" role="list">
-        {SERVICES_LINKS.map(({ label, href }) => (
-          <li key={href} role="listitem">
-            <FooterLink href={href}>{label}</FooterLink>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-}
-
-function QuickLinksColumn() {
-  return (
-    <div>
-      <FooterHeading>Quick Links</FooterHeading>
-      <ul className="flex flex-col gap-2.5" role="list">
-        {QUICK_LINKS.map(({ label, href }) => (
-          <li key={href} role="listitem">
-            <FooterLink href={href}>{label}</FooterLink>
-          </li>
-        ))}
-      </ul>
-
-      {/* Schedule CTA */}
-      <div className="mt-6">
-        <Link
-          href="/contact"
-          className={cn(
-            "inline-flex items-center gap-2 rounded-xl",
-            "bg-primary px-4 py-2.5 text-[13px] font-medium text-white",
-            "transition-opacity hover:opacity-90",
-            "outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
-          )}
-        >
-          Book a Call
-          <ArrowUpRight className="size-4" strokeWidth={1.75} />
-        </Link>
-      </div>
-    </div>
-  );
-}
-
-function ContactColumn() {
-  return (
-    <div>
-      <FooterHeading>Contact</FooterHeading>
-      <ul className="flex flex-col gap-4" role="list">
-        {CONTACT_INFO.map(({ icon: Icon, label, value, href }) => (
-          <li key={label} role="listitem">
-            <div className="flex items-start gap-3">
-              <div
-                className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-white/8 text-white/50"
+              <span
+                className="size-[7px] shrink-0 rounded-full bg-white/35 transition-colors duration-300 group-hover:bg-primary"
                 aria-hidden="true"
-              >
-                <Icon className="size-[14px]" strokeWidth={1.75} />
-              </div>
-              <div className="flex flex-col gap-0.5">
-                <span className="text-[10.5px] uppercase tracking-wider text-white/35 font-medium">
-                  {label}
-                </span>
-                {href ? (
-                  <a
-                    href={href}
-                    target={href.startsWith("http") ? "_blank" : undefined}
-                    rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
-                    className={cn(
-                      "text-[13.5px] font-light text-white/65",
-                      "transition-colors hover:text-white",
-                      "outline-none focus-visible:rounded focus-visible:ring-2 focus-visible:ring-white/30"
-                    )}
-                  >
-                    {value}
-                  </a>
-                ) : (
-                  <span className="text-[13.5px] font-light text-white/65">
-                    {value}
-                  </span>
-                )}
-              </div>
-            </div>
+              />
+              {label}
+            </Link>
           </li>
         ))}
       </ul>
-    </div>
+    </nav>
   );
 }
-
-/* ─── Footer ─────────────────────────────────────────────────────────────────── */
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
     <footer
-      className="bg-[oklch(0.09_0.010_264)] text-white"
+      className="relative text-white"
+      style={{ background: FOOTER_SURFACE }}
       role="contentinfo"
       aria-label="Site footer"
     >
-      {/* Main grid */}
-      <div className="mx-auto max-w-340 px-5 min-[580px]:px-8">
-        <div className="py-14 lg:py-16">
-          <div
-            className={cn(
-              "grid grid-cols-1 gap-10",
-              "sm:grid-cols-2",
-              "lg:grid-cols-4 lg:gap-8 xl:gap-12"
-            )}
-          >
-            <BrandColumn />
-            <ServicesColumn />
-            <QuickLinksColumn />
-            <ContactColumn />
+      <div className={siteContainerClass}>
+        <div className="grid grid-cols-1 gap-12 py-16 min-[580px]:grid-cols-2 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.8fr)_minmax(0,0.8fr)_minmax(0,1fr)] lg:gap-10 lg:py-20 xl:gap-14">
+          <div className="flex flex-col">
+            <Link
+              href="/"
+              className="flex w-fit items-center gap-3 outline-none focus-visible:rounded-xl focus-visible:ring-2 focus-visible:ring-primary/40"
+              aria-label={`${SITE_PROFILE.name} — Home`}
+            >
+              <BrandMark />
+              <span className="font-heading text-[32px] font-bold uppercase leading-none tracking-tight min-[580px]:text-[37px]">
+                <span className="text-white">Rajesh</span>
+                <span className="text-primary">Kumar</span>
+              </span>
+            </Link>
+
+            <p className="mt-7 max-w-[21rem] text-[15px] font-light leading-[1.75] text-white/55">
+              India–China business consulting for market entry, trade,
+              compliance and cross-cultural operations.
+            </p>
+
+            <div className="mt-8 flex items-center gap-4">
+              <PhoneCall
+                className="size-9 shrink-0 text-primary"
+                strokeWidth={1.5}
+                aria-hidden="true"
+              />
+              <span className="h-12 w-px bg-primary" aria-hidden="true" />
+              <span className="flex flex-col gap-1">
+                <a
+                  href={SITE_PROFILE.phoneHref}
+                  className={cn(
+                    "font-heading text-[21px] font-bold leading-none tracking-tight text-white",
+                    "transition-colors duration-300 hover:text-primary",
+                    "outline-none focus-visible:rounded focus-visible:ring-2 focus-visible:ring-primary/40"
+                  )}
+                >
+                  {SITE_PROFILE.phone}
+                </a>
+                <span className="text-[13px] font-bold text-primary">
+                  Call 24/7
+                </span>
+              </span>
+            </div>
+
+            <ul className="mt-9 flex items-center gap-3.5" role="list">
+              {SOCIALS.map(({ label, href, icon: Icon }) => (
+                <li key={label}>
+                  <a
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={label}
+                    className={cn(
+                      "flex size-[46px] items-center justify-center rounded-full",
+                      "border border-dashed border-white/25 text-white/60",
+                      "transition-colors duration-300 hover:border-primary hover:bg-primary hover:text-primary-foreground",
+                      "outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
+                    )}
+                  >
+                    <Icon className="size-[18px]" strokeWidth={1.75} aria-hidden="true" />
+                  </a>
+                </li>
+              ))}
+              <li>
+                <a
+                  href={`mailto:${SITE_PROFILE.email}`}
+                  aria-label="Email"
+                  className={cn(
+                    "flex size-[46px] items-center justify-center rounded-full",
+                    "border border-dashed border-white/25 font-heading text-[13px] font-semibold text-white/60",
+                    "transition-colors duration-300 hover:border-primary hover:bg-primary hover:text-primary-foreground",
+                    "outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
+                  )}
+                >
+                  @
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <LinkColumn heading="Useful Links" links={USEFUL_LINKS} />
+          <LinkColumn heading="Resource" links={RESOURCE_LINKS} />
+
+          <div>
+            <FooterHeading>Instagram</FooterHeading>
+            <ul className="grid max-w-[22rem] grid-cols-3 gap-2.5" role="list">
+              {GALLERY.map(({ src, alt }) => (
+                <li key={src}>
+                  <a
+                    href="https://instagram.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={cn(
+                      "group relative block aspect-square overflow-hidden rounded-lg",
+                      "outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
+                    )}
+                  >
+                    <Image
+                      src={src}
+                      alt={alt}
+                      fill
+                      sizes="110px"
+                      className="object-cover transition-transform duration-500 group-hover:scale-110"
+                    />
+                    <span
+                      className="absolute inset-0 bg-primary/0 transition-colors duration-300 group-hover:bg-primary/35"
+                      aria-hidden="true"
+                    />
+                  </a>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
+      </div>
 
-        {/* Divider */}
-        <div className="h-px w-full bg-white/8" role="separator" />
-
-        {/* Bottom bar */}
-        <div
-          className={cn(
-            "flex flex-col gap-3 py-5",
-            "sm:flex-row sm:items-center sm:justify-between"
-          )}
-        >
-          <p className="text-[12px] font-light text-white/35">
-            &copy; {currentYear} Rajesh Kumar. All rights reserved.
-          </p>
-
-          <nav
-            className="flex items-center gap-4"
-            aria-label="Legal links"
-          >
-            <FooterLink href="/privacy-policy" className="text-[12px]">
-              Privacy Policy
-            </FooterLink>
-            <FooterLink href="/terms" className="text-[12px]">
-              Terms of Service
-            </FooterLink>
-            <FooterLink href="/sitemap.xml" className="text-[12px]">
-              Sitemap
-            </FooterLink>
-          </nav>
+      <div style={{ background: FOOTER_BAR_SURFACE }}>
+        <div className={siteContainerClass}>
+          <div className="flex flex-col items-center gap-3 py-6 min-[580px]:flex-row min-[580px]:justify-center">
+            <p className="text-center text-[14px] font-bold text-white/55">
+              Copyright &copy; {currentYear}{" "}
+              <span className="text-primary">Rajesh Kumar</span>. All Rights
+              Reserved.
+            </p>
+          </div>
         </div>
       </div>
     </footer>
