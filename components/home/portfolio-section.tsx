@@ -66,10 +66,14 @@ export function PortfolioSection() {
                           onMouseEnter={() => setActiveIndex(index)}
                         >
                           <div className="portfolio-two__box-content">
-                            <div
-                              className="single-portfolio-two__bg"
-                              style={{ backgroundImage: `url(${item.image})` }}
-                            />
+                            <div className="single-portfolio-two__bg">
+                              <Image
+                                src={item.image}
+                                alt=""
+                                fill
+                                sizes="(min-width: 1200px) 640px, (min-width: 768px) 50vw, 100vw"
+                              />
+                            </div>
                             <div className="portfolio-two__title">
                               <h3>
                                 <Link href={item.href}>

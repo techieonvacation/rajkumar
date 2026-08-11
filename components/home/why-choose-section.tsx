@@ -51,8 +51,8 @@ export function WhyChooseSection() {
                     <Image
                       src="/template/resources/why-choose-one-client-img.jpg"
                       alt="Thomas Alison"
-                      width={42}
-                      height={42}
+                      width={46}
+                      height={46}
                     />
                   </div>
                   <div className="why-choose-one__client-content">
@@ -73,8 +73,9 @@ export function WhyChooseSection() {
                 <Image
                   src="/template/resources/why-choose-one-img-1.png"
                   alt="Why choose us"
-                  width={670}
-                  height={610}
+                  width={703}
+                  height={703}
+                  sizes="(min-width: 1200px) 670px, (min-width: 768px) 600px, 100vw"
                 />
               </div>
               <div className="why-choose-one__shape-1 img-bounce">

@@ -6,10 +6,14 @@ import { PROCESS_STEPS } from "@/lib/home-sections";
 export function ProcessSection() {
   return (
     <section className="tg-section process-two">
-      <div
-        className="process-two__bg"
-        style={{ backgroundImage: "url(/template/backgrounds/process-two-bg.jpg)" }}
-      />
+      <div className="process-two__bg">
+        <Image
+          src="/template/backgrounds/process-two-bg.jpg"
+          alt=""
+          fill
+          sizes="100vw"
+        />
+      </div>
       <div className="tg-container">
         <SectionTitle tagline="Working Process" align="center">
           Our Seamless Process

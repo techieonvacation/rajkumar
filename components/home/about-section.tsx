@@ -15,6 +15,7 @@ export function AboutSection() {
           alt=""
           width={560}
           height={583}
+          priority
         />
       </div>
       <div className="tg-container">
@@ -28,6 +29,7 @@ export function AboutSection() {
                     alt="Consulting team at work"
                     width={495}
                     height={474}
+                    sizes="(min-width: 1200px) 500px, (min-width: 768px) 620px, 100vw"
                   />
                 </div>
                 <div className="about-two__img-2">
@@ -36,6 +38,7 @@ export function AboutSection() {
                     alt="Client strategy session"
                     width={336}
                     height={344}
+                    sizes="(min-width: 768px) 336px, 100vw"
                   />
                 </div>
                 <div className="about-two__shape-1" />
@@ -45,7 +48,7 @@ export function AboutSection() {
                   {ABOUT_CLIENT_IMAGES.map((src) => (
                     <li key={src}>
                       <div className="about-two__client-img">
-                        <Image src={src} alt="" width={36} height={35} />
+                        <Image src={src} alt="" width={41} height={40} />
                       </div>
                     </li>
                   ))}

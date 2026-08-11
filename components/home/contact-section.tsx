@@ -20,12 +20,14 @@ export function ContactSection() {
         </ul>
       </div>
 
-      <div
-        className="contact-two__bg"
-        style={{
-          backgroundImage: "url(/template/backgrounds/contact-two-bg.jpg)",
-        }}
-      />
+      <div className="contact-two__bg">
+        <Image
+          src="/template/backgrounds/contact-two-bg.jpg"
+          alt=""
+          fill
+          sizes="25vw"
+        />
+      </div>
       <div className="contact-two__shape-1 float-bob-y">
         <Image
           src="/template/shapes/contact-two-shape-1.png"

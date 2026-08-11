@@ -177,7 +177,7 @@
   -webkit-appearance: none;
   outline: none !important;
   background: var(--tg-gradient-2);
-  color: var(--foreground);
+  color: var(--primary-foreground);
   font-size: 16px;
   line-height: 16px;
   font-weight: 500;
@@ -233,7 +233,7 @@
 }
 
 .thm-btn:hover {
-  color: var(--background);
+  color: var(--primary-foreground);
 }
 
 /* Motion */
@@ -441,7 +441,7 @@
   height: 40px;
   border: 2px solid var(--background);
   font-size: 16px;
-  color: var(--background);
+  color: var(--primary-foreground);
   border-radius: 50%;
   background-color: var(--primary);
 }
@@ -1179,10 +1179,13 @@
 .process-two__bg {
   position: absolute;
   inset: 0;
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
   z-index: -1;
+}
+
+.process-two__bg img {
+  object-fit: cover;
+  object-position: center;
+  z-index: -2;
 }
 
 .process-two__bg::before {
@@ -1234,7 +1237,7 @@
   font-size: 40px;
   line-height: 40px;
   font-weight: 700;
-  color: var(--foreground);
+  color: var(--primary-foreground);
   counter-increment: count 1;
   content: "0" counter(count);
   transform: translateX(-50%);
@@ -1395,11 +1398,15 @@
   position: absolute;
   inset: 0;
   border-radius: 24px;
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center center;
   overflow: hidden;
   transition: all 500ms ease;
+  z-index: -1;
+}
+
+.single-portfolio-two__bg img {
+  object-fit: cover;
+  object-position: center center;
+  border-radius: 24px;
   z-index: -1;
 }
 
@@ -1495,7 +1502,7 @@
   height: 48px;
   border-radius: 50%;
   font-size: 16px;
-  color: var(--foreground);
+  color: var(--primary-foreground);
   z-index: 1;
 }
 
@@ -1700,12 +1707,15 @@
   left: 0;
   bottom: 0;
   width: calc((100% - 340px) / 4);
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: left center;
   border-top-right-radius: 100px;
   border-bottom-right-radius: 100px;
+  overflow: hidden;
   z-index: 1;
+}
+
+.contact-two__bg img {
+  object-fit: cover;
+  object-position: left center;
 }
 
 .contact-two__shape-1 {
@@ -1803,7 +1813,7 @@
   position: relative;
   display: inline-block;
   font-size: 20px;
-  color: var(--foreground);
+  color: var(--primary-foreground);
 }
 
 .contact-two__contact-list li .content {
