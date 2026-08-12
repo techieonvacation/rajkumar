@@ -12,6 +12,7 @@
     "db:migrate": "prisma migrate dev",
     "db:studio": "prisma studio",
     "seed:home": "npx tsx scripts/seed-home.mts",
+    "seed:sections": "npx tsx scripts/seed-home-sections.mts",
     "admin:password": "node scripts/set-admin-password.mts"
   },
   "dependencies": {

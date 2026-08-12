@@ -12,6 +12,12 @@ import { TestimonialsSection } from "@/components/home/testimonials-section";
 import { BlogSection } from "@/components/home/blog-section";
 // import { ContactSection } from "@/components/home/contact-section";
 import { getPublishedHero, getPublishedStats } from "@/lib/actions/home";
+import { getPublishedAboutSection } from "@/lib/actions/sections/about";
+import { getPublishedCounterSection } from "@/lib/actions/sections/counter";
+import { getPublishedHomeServicesSection } from "@/lib/actions/sections/services";
+import { getPublishedWorksSection } from "@/lib/actions/sections/works";
+import { getPublishedWhyChooseSection } from "@/lib/actions/sections/why-choose";
+import { getPublishedProcessSection } from "@/lib/actions/sections/process";
 import {
   organizationSchema,
   personSchema,
@@ -33,9 +39,24 @@ export const metadata: Metadata = {
 };
 
 export default async function HomePage() {
-  const [hero, stats] = await Promise.all([
+  const [
+    hero,
+    stats,
+    about,
+    counter,
+    services,
+    works,
+    whyChoose,
+    workingProcess,
+  ] = await Promise.all([
     getPublishedHero(),
     getPublishedStats(),
+    getPublishedAboutSection(),
+    getPublishedCounterSection(),
+    getPublishedHomeServicesSection(),
+    getPublishedWorksSection(),
+    getPublishedWhyChooseSection(),
+    getPublishedProcessSection(),
   ]);
 
   const jsonLd = [personSchema(), organizationSchema(), websiteSchema()];
@@ -57,12 +78,12 @@ export default async function HomePage() {
         </>
       )}
 
-      <AboutSection />
-      <CounterSection />
-      <ServicesSection />
-      <WorksSection />
-      <WhyChooseSection />
-      <ProcessSection />
+      {about && <AboutSection {...about} />}
+      {counter && <CounterSection {...counter} />}
+      {services && <ServicesSection {...services} />}
+      {works && <WorksSection {...works} />}
+      {whyChoose && <WhyChooseSection {...whyChoose} />}
+      {workingProcess && <ProcessSection {...workingProcess} />}
       <PortfolioSection />
       <TestimonialsSection />
       <BlogSection />

@@ -7,7 +7,7 @@ function createPrismaClient() {
 }
 
 function isClientStale(client: PrismaClient) {
-  return typeof (client as PrismaClient & { servicesSection?: unknown }).servicesSection === "undefined";
+  return typeof (client as PrismaClient & { homeAboutSection?: unknown }).homeAboutSection === "undefined";
 }
 
 declare global {

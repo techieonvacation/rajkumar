@@ -21,8 +21,14 @@ import {
   Shield,
   ExternalLink,
   Bell,
+  Users,
+  BarChart3,
+  FolderKanban,
+  ShieldCheck,
+  Workflow,
 } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import "./template-icons.css";
 
 /* ─── Nav items ──────────────────────────────────────────────────────────────── */
 
@@ -37,11 +43,21 @@ const NAV_GROUPS: Array<{
     ],
   },
   {
-    label: "Content",
+    label: "Homepage",
     items: [
       { label: "Hero", href: "/admin/hero", icon: Star },
+      { label: "About Us", href: "/admin/home/about", icon: Users },
+      { label: "The Numbers Speak", href: "/admin/home/numbers", icon: BarChart3 },
+      { label: "Our Services", href: "/admin/home/services", icon: Briefcase },
+      { label: "See Our Works", href: "/admin/home/works", icon: FolderKanban },
+      { label: "Why Chooses Us", href: "/admin/home/why-choose", icon: ShieldCheck },
+      { label: "Working Process", href: "/admin/home/process", icon: Workflow },
+    ],
+  },
+  {
+    label: "Content",
+    items: [
       { label: "Navigation", href: "/admin/navigation", icon: Compass },
-      { label: "Services", href: "/admin/services", icon: Briefcase },
       { label: "Blog", href: "/admin/blog", icon: FileText },
     ],
   },

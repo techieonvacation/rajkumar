@@ -1,0 +1,45 @@
+@font-face {
+  font-family: "tg-icons";
+  src:
+    url("/fonts/icomoon.woff") format("woff"),
+    url("/fonts/icomoon.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+
+[class*="tg-icon-"] {
+  font-family: "tg-icons" !important;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  speak: never;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.tg-icon-right-arrow::before { content: "\e900"; }
+.tg-icon-facebook::before { content: "\e902"; }
+.tg-icon-dribble::before { content: "\e903"; }
+.tg-icon-linkedin::before { content: "\e905"; }
+.tg-icon-tick-inside-circle::before { content: "\e906"; }
+.tg-icon-pin::before { content: "\e907"; }
+.tg-icon-phone-call::before { content: "\e909"; }
+.tg-icon-customer-service-headset::before { content: "\e90c"; }
+.tg-icon-trophy::before { content: "\e90d"; }
+.tg-icon-user::before { content: "\e90e"; }
+.tg-icon-chat::before { content: "\e90f"; }
+.tg-icon-laughing::before { content: "\e910"; }
+.tg-icon-user-1::before { content: "\e911"; }
+.tg-icon-plus::before { content: "\e916"; }
+.tg-icon-email::before { content: "\e917"; }
+.tg-icon-edit::before { content: "\e918"; }
+.tg-icon-right-arrow-1::before { content: "\e919"; }
+.tg-icon-mail::before { content: "\e91a"; }
+.tg-icon-right-up::before { content: "\e91b"; }
+.tg-icon-contact::before { content: "\e91f"; }
+.tg-icon-left::before { content: "\e920"; }
+.tg-icon-clock::before { content: "\e921"; }
+.tg-icon-calendar::before { content: "\e924"; }

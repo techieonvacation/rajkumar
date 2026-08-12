@@ -1,23 +1,30 @@
-import { Fragment } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { FancyButton } from "@/components/ui/fancy-button";
 import { SectionTitle } from "@/components/home/template/section-title";
 import { CountUp } from "@/components/home/template/count-up";
-import { ABOUT_CLIENT_IMAGES, ABOUT_POINTS } from "@/lib/home-sections";
+import { MultiLine, RichTitle } from "@/components/home/template/rich-text";
+import type { AboutSectionData } from "@/lib/home/section-types";
 
-export function AboutSection() {
+export function AboutSection({ section, points, clients }: AboutSectionData) {
+  const perColumn = Math.max(1, section.pointsPerColumn);
+  const columns = [points.slice(0, perColumn), points.slice(perColumn)].filter(
+    (column) => column.length > 0,
+  );
+
   return (
     <section className="tg-section about-two" id="about">
       <div className="about-two__shape-2" />
       <div className="about-two__shape-3">
-        <Image
-          src="/template/shapes/about-two-shape-3.png"
-          alt=""
-          width={560}
-          height={583}
-          priority
-        />
+        {section.shapeImage && (
+          <Image
+            src={section.shapeImage}
+            alt=""
+            width={560}
+            height={583}
+            priority
+          />
+        )}
       </div>
       <div className="tg-container">
         <div className="tg-row">
@@ -25,112 +32,118 @@ export function AboutSection() {
             <div className="about-two__left">
               <div className="about-two__img-box">
                 <div className="about-two__img">
-                  <Image
-                    src="/template/resources/about-two-img-1.jpg"
-                    alt="Consulting team at work"
-                    width={495}
-                    height={474}
-                    sizes="(min-width: 1200px) 500px, (min-width: 768px) 620px, 100vw"
-                  />
+                  {section.image1 && (
+                    <Image
+                      src={section.image1}
+                      alt={section.image1Alt}
+                      width={495}
+                      height={474}
+                      sizes="(min-width: 1200px) 500px, (min-width: 768px) 620px, 100vw"
+                    />
+                  )}
                 </div>
                 <div className="about-two__img-2">
-                  <Image
-                    src="/template/resources/about-two-img-2.jpg"
-                    alt="Client strategy session"
-                    width={336}
-                    height={344}
-                    sizes="(min-width: 768px) 336px, 100vw"
-                  />
+                  {section.image2 && (
+                    <Image
+                      src={section.image2}
+                      alt={section.image2Alt}
+                      width={336}
+                      height={344}
+                      sizes="(min-width: 768px) 336px, 100vw"
+                    />
+                  )}
                 </div>
                 <div className="about-two__shape-1" />
               </div>
               <div className="about-two__client-box">
                 <ul className="about-two__client-img-list">
-                  {ABOUT_CLIENT_IMAGES.map((src) => (
-                    <li key={src}>
+                  {clients.map((client) => (
+                    <li key={client.id}>
                       <div className="about-two__client-img">
-                        <Image src={src} alt="" width={41} height={40} />
+                        <Image
+                          src={client.image}
+                          alt={client.alt}
+                          width={41}
+                          height={40}
+                        />
                       </div>
                     </li>
                   ))}
                   <li>
-                    <Link href="/about" aria-label="View all clients">
+                    <Link
+                      href={section.clientsUrl || "#"}
+                      aria-label="View all clients"
+                    >
                       <span className="tg-icon-plus" />
                     </Link>
                   </li>
                 </ul>
                 <p className="about-two__client-text">
                   <span>
-                    <CountUp end={120} duration={2} />
+                    <CountUp
+                      end={section.clientsCount}
+                      duration={section.clientsCountDuration}
+                    />
                   </span>
-                  <span>K</span> Satisfied Client
+                  <span>{section.clientsCountSuffix}</span>{" "}
+                  {section.clientsLabel}
                 </p>
               </div>
             </div>
           </div>
           <div className="tg-col-xl-6">
             <div className="about-two__right">
-              <SectionTitle tagline="About Us">
-                Unlock Your Business <span>Potential</span>
-                <br />
-                <span>with Our best Cutting-Edge</span> IT
-                <br /> Solutions to grow
+              <SectionTitle tagline={section.tagline}>
+                <RichTitle text={section.title} />
               </SectionTitle>
-              <p className="about-two__text">
-                Transform your business with our innovative IT solutions,
-                tailored to address your unique challenges and drive growth in
-                today&apos;s digital landscape.
-              </p>
+              <p className="about-two__text">{section.text}</p>
               <div className="about-two__points-box">
-                {[ABOUT_POINTS.slice(0, 2), ABOUT_POINTS.slice(2)].map(
-                  (group, groupIndex) => (
-                    <ul className="about-two__points-list" key={groupIndex}>
-                      {group.map((lines) => (
-                        <li key={lines[0]}>
-                          <div className="icon">
-                            <span className="tg-icon-tick-inside-circle" />
-                          </div>
-                          <p>
-                            {lines.map((line, lineIndex) => (
-                              <Fragment key={line}>
-                                {lineIndex > 0 && <br />}
-                                {line}
-                              </Fragment>
-                            ))}
-                          </p>
-                        </li>
-                      ))}
-                    </ul>
-                  ),
-                )}
+                {columns.map((column, columnIndex) => (
+                  <ul className="about-two__points-list" key={columnIndex}>
+                    {column.map((point) => (
+                      <li key={point.id}>
+                        <div className="icon">
+                          <span className={section.pointIcon} />
+                        </div>
+                        <p>
+                          <MultiLine text={point.text} />
+                        </p>
+                      </li>
+                    ))}
+                  </ul>
+                ))}
               </div>
               <div className="about-two__experience-contact-and-btn">
                 <div className="about-two__experience-box">
                   <div className="about-two__experience-count-box">
                     <h3>
-                      <CountUp end={25} duration={2} />
+                      <CountUp
+                        end={section.experienceCount}
+                        duration={section.experienceDuration}
+                      />
                     </h3>
-                    <span>+</span>
+                    <span>{section.experienceSuffix}</span>
                   </div>
                   <p className="about-two__experience-text">
-                    Years of
-                    <br /> Experience
+                    <MultiLine text={section.experienceLabel} />
                   </p>
                 </div>
                 <div className="about-two__call-box">
                   <div className="about-two__call-icon">
-                    <span className="tg-icon-customer-service-headset" />
+                    <span className={section.callIcon} />
                   </div>
                   <div className="about-two__call-content">
-                    <span>call us for inquiry</span>
+                    <span>{section.callLabel}</span>
                     <p>
-                      <Link href="tel:00123456767">+00 (123) 456767</Link>
+                      <Link href={section.callUrl || "#"}>
+                        {section.callNumber}
+                      </Link>
                     </p>
                   </div>
                 </div>
                 <div className="about-two__btn-box">
-                  <FancyButton variant="explore" href="/about">
-                    Learn More
+                  <FancyButton variant="explore" href={section.ctaUrl || "#"}>
+                    {section.ctaLabel}
                   </FancyButton>
                 </div>
               </div>

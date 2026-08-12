@@ -1,59 +1,59 @@
 import Image from "next/image";
 import Link from "next/link";
 import { SectionTitle } from "@/components/home/template/section-title";
-import { SERVICES } from "@/lib/home-sections";
+import { CurvedText } from "@/components/home/template/curved-text";
+import { MultiLine, RichTitle } from "@/components/home/template/rich-text";
+import type { ServicesSectionData } from "@/lib/home/section-types";
 
-const CIRCLE_TEXT = " View All Project • View All Services •";
-const CIRCLE_RADIUS = 73.6;
+function toPairs(features: string[]) {
+  const pairs: string[][] = [];
+  for (let index = 0; index < features.length; index += 2) {
+    pairs.push(features.slice(index, index + 2));
+  }
+  return pairs;
+}
 
-export function ServicesSection() {
-  const characters = CIRCLE_TEXT.split("");
-  const step = 360 / characters.length;
-
+export function ServicesSection({ section, cards }: ServicesSectionData) {
   return (
     <section className="tg-section services-two" id="services">
       <div className="services-two__shape-1" />
       <div className="tg-container">
         <div className="services-two__top">
-          <SectionTitle tagline="Our Services">
-            Your Business with Cutting-Edge IT
-            <br /> Solutions{" "}
-            <Image
-              src="/template/services/section-title-img.jpg"
-              alt=""
-              width={120}
-              height={40}
+          <SectionTitle tagline={section.tagline}>
+            <RichTitle
+              text={section.title}
+              image={
+                section.titleImage ? (
+                  <Image
+                    src={section.titleImage}
+                    alt=""
+                    width={120}
+                    height={40}
+                  />
+                ) : null
+              }
             />
-            <span>Innovative IT Services</span>
-            <br />
-            <span>Tailored for Your Success</span>
           </SectionTitle>
-          <Link href="/services" className="services-two__round-text-box">
+          <Link
+            href={section.circleUrl || "#"}
+            className="services-two__round-text-box"
+          >
             <div className="services-two__round-text-box-outer">
               <div className="services-two__round-text-box-inner">
-                <div className="services-two__curved-circle">
-                  {characters.map((character, index) => (
-                    <span
-                      key={index}
-                      style={{
-                        position: "absolute",
-                        left: "0%",
-                        top: "0%",
-                        transformOrigin: `0 ${CIRCLE_RADIUS}px`,
-                        transform: `rotate(${index * step}deg)`,
-                      }}
-                    >
-                      {character}
-                    </span>
-                  ))}
-                </div>
+                <CurvedText
+                  text={section.circleText}
+                  radius={section.circleRadius}
+                  className="services-two__curved-circle"
+                />
                 <div className="services-two__round-icon">
-                  <Image
-                    src="/template/icon/services-two-round-icon.png"
-                    alt=""
-                    width={42}
-                    height={42}
-                  />
+                  {section.circleIcon && (
+                    <Image
+                      src={section.circleIcon}
+                      alt=""
+                      width={42}
+                      height={42}
+                    />
+                  )}
                 </div>
               </div>
             </div>
@@ -61,9 +61,9 @@ export function ServicesSection() {
         </div>
         <div className="services-two__bottom">
           <div className="services-two__services-list">
-            {SERVICES.map((service, index) => (
+            {cards.map((card, index) => (
               <div
-                key={service.title.join(" ")}
+                key={card.id}
                 className={`services-two__services-list-single${
                   index === 0 ? " services-two__services-list-single-1" : ""
                 }`}
@@ -71,18 +71,17 @@ export function ServicesSection() {
                 <div className="services-two__count-and-title">
                   <div className="services-two__count" />
                   <h3 className="services-two__title">
-                    <Link href={service.href}>
-                      {service.title[0]}
-                      <br /> {service.title[1]}
+                    <Link href={card.url || "#"}>
+                      <MultiLine text={card.title} />
                     </Link>
                   </h3>
                 </div>
                 <div className="services-two__service-list-box">
                   <ul className="services-two__services-list-inner">
-                    {service.features.map((pair) => (
-                      <li key={pair.join("-")}>
-                        {pair.map((feature) => (
-                          <p key={feature}>
+                    {toPairs(card.features).map((pair, pairIndex) => (
+                      <li key={pairIndex}>
+                        {pair.map((feature, featureIndex) => (
+                          <p key={featureIndex}>
                             <span className="tg-icon-plus" />
                             {feature}
                           </p>
@@ -92,12 +91,14 @@ export function ServicesSection() {
                   </ul>
                 </div>
                 <div className="services-two__hover-img">
-                  <Image
-                    src={service.image}
-                    alt={service.title.join(" ")}
-                    width={250}
-                    height={320}
-                  />
+                  {card.image && (
+                    <Image
+                      src={card.image}
+                      alt={card.title.replace(/\s*\n\s*/g, " ")}
+                      width={250}
+                      height={320}
+                    />
+                  )}
                 </div>
               </div>
             ))}

@@ -6,7 +6,7 @@ import {
   MessageSquare,
   FileText,
   Briefcase,
-  Quote,
+  FolderKanban,
   TrendingUp,
   Clock,
   ArrowUpRight,
@@ -55,8 +55,8 @@ interface DashboardContentProps {
   stats: {
     contacts: number;
     blogPosts: number;
-    services: number;
-    testimonials: number;
+    homeServices: number;
+    homeWorks: number;
   };
   recentContacts: Array<{
     id: string;
@@ -147,22 +147,22 @@ export function DashboardContent({
       trend: "Published & drafts",
     },
     {
-      label: "Services",
-      value: stats.services,
+      label: "Homepage Services",
+      value: stats.homeServices,
       icon: Briefcase,
       iconBg: "bg-emerald-500/10",
       iconColor: "text-emerald-500",
-      href: "/admin/services",
-      trend: "Active offerings",
+      href: "/admin/home/services",
+      trend: "Service rows",
     },
     {
-      label: "Testimonials",
-      value: stats.testimonials,
-      icon: Quote,
+      label: "Homepage Works",
+      value: stats.homeWorks,
+      icon: FolderKanban,
       iconBg: "bg-amber-500/10",
       iconColor: "text-amber-500",
-      href: "/admin/testimonials",
-      trend: "Client reviews",
+      href: "/admin/home/works",
+      trend: "Portfolio slides",
     },
   ];
 

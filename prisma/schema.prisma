@@ -204,6 +204,227 @@ model ServicesSection {
   createdAt     DateTime @default(now())
 }
 
+// ── Homepage: About Us ────────────────────────────────────────────────────────
+
+model HomeAboutSection {
+  id                  String   @id @default("singleton")
+  tagline             String   @default("")
+  title               String   @default("")
+  text                String   @default("")
+  image1              String   @default("")
+  image1Alt           String   @default("")
+  image2              String   @default("")
+  image2Alt           String   @default("")
+  shapeImage          String   @default("")
+  clientsUrl          String   @default("")
+  clientsCount        Int      @default(0)
+  clientsCountSuffix  String   @default("")
+  clientsCountDuration Float   @default(2)
+  clientsLabel        String   @default("")
+  pointsPerColumn     Int      @default(2)
+  pointIcon           String   @default("tg-icon-tick-inside-circle")
+  experienceCount     Int      @default(0)
+  experienceDuration  Float    @default(2)
+  experienceSuffix    String   @default("+")
+  experienceLabel     String   @default("")
+  callIcon            String   @default("tg-icon-customer-service-headset")
+  callLabel           String   @default("")
+  callNumber          String   @default("")
+  callUrl             String   @default("")
+  ctaLabel            String   @default("")
+  ctaUrl              String   @default("")
+  published           Boolean  @default(true)
+  updatedAt           DateTime @updatedAt
+  createdAt           DateTime @default(now())
+}
+
+model HomeAboutPoint {
+  id        String   @id @default(cuid())
+  text      String
+  order     Int      @default(0)
+  published Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([order])
+}
+
+model HomeAboutClient {
+  id        String   @id @default(cuid())
+  image     String
+  alt       String   @default("")
+  order     Int      @default(0)
+  published Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([order])
+}
+
+// ── Homepage: The Numbers Speak ───────────────────────────────────────────────
+
+model HomeCounterSection {
+  id        String   @id @default("singleton")
+  tagline   String   @default("")
+  title     String   @default("")
+  align     String   @default("center")
+  bgShape   String   @default("")
+  published Boolean  @default(true)
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+}
+
+model HomeCounterItem {
+  id        String   @id @default(cuid())
+  icon      String   @default("tg-icon-trophy")
+  value     Int      @default(0)
+  duration  Float    @default(2)
+  suffix    String   @default("+")
+  label     String
+  animation String   @default("fade-in-left")
+  delay     String   @default("100ms")
+  order     Int      @default(0)
+  published Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([order])
+}
+
+// ── Homepage: Our Services ────────────────────────────────────────────────────
+
+model HomeServicesSection {
+  id           String   @id @default("singleton")
+  tagline      String   @default("")
+  title        String   @default("")
+  titleImage   String   @default("")
+  circleText   String   @default("")
+  circleRadius Float    @default(73.6)
+  circleUrl    String   @default("")
+  circleIcon   String   @default("")
+  published    Boolean  @default(true)
+  updatedAt    DateTime @updatedAt
+  createdAt    DateTime @default(now())
+}
+
+model HomeServiceCard {
+  id        String   @id @default(cuid())
+  title     String
+  url       String   @default("/services")
+  image     String   @default("")
+  features  String[]
+  order     Int      @default(0)
+  published Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([order])
+}
+
+// ── Homepage: See Our Works ───────────────────────────────────────────────────
+
+model HomeWorksSection {
+  id            String   @id @default("singleton")
+  bigText       String   @default("")
+  tagline       String   @default("")
+  title         String   @default("")
+  circleText    String   @default("")
+  circleRadius  Float    @default(73.6)
+  circleUrl     String   @default("")
+  circleIcon    String   @default("")
+  shape1        String   @default("")
+  shape2        String   @default("")
+  autoplayDelay Int      @default(5000)
+  loop          Boolean  @default(true)
+  spaceBetween  Int      @default(30)
+  slidesMobile  Int      @default(1)
+  slidesTablet  Int      @default(2)
+  slidesDesktop Int      @default(3)
+  slidesWide    Int      @default(4)
+  lightbox      Boolean  @default(true)
+  published     Boolean  @default(true)
+  updatedAt     DateTime @updatedAt
+  createdAt     DateTime @default(now())
+}
+
+model HomeWorkItem {
+  id        String   @id @default(cuid())
+  image     String   @default("")
+  title     String
+  text      String   @default("")
+  year      String   @default("")
+  url       String   @default("/projects")
+  tags      String[]
+  order     Int      @default(0)
+  published Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([order])
+}
+
+// ── Homepage: Why Chooses Us ──────────────────────────────────────────────────
+
+model HomeWhyChooseSection {
+  id          String   @id @default("singleton")
+  tagline     String   @default("")
+  title       String   @default("")
+  text        String   @default("")
+  ctaLabel    String   @default("")
+  ctaUrl      String   @default("")
+  clientImage String   @default("")
+  clientName  String   @default("")
+  clientRole  String   @default("")
+  image       String   @default("")
+  imageAlt    String   @default("")
+  shape1      String   @default("")
+  shape2      String   @default("")
+  shape3      String   @default("")
+  published   Boolean  @default(true)
+  updatedAt   DateTime @updatedAt
+  createdAt   DateTime @default(now())
+}
+
+model HomeWhyChooseSkill {
+  id        String   @id @default(cuid())
+  title     String
+  percent   Int      @default(0)
+  order     Int      @default(0)
+  published Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([order])
+}
+
+// ── Homepage: Working Process ─────────────────────────────────────────────────
+
+model HomeProcessSection {
+  id             String   @id @default("singleton")
+  tagline        String   @default("")
+  title          String   @default("")
+  align          String   @default("center")
+  bgImage        String   @default("")
+  shape1         String   @default("")
+  shape2         String   @default("")
+  shapeStepIndex Int      @default(1)
+  published      Boolean  @default(true)
+  updatedAt      DateTime @updatedAt
+  createdAt      DateTime @default(now())
+}
+
+model HomeProcessStep {
+  id        String   @id @default(cuid())
+  title     String
+  text      String   @default("")
+  order     Int      @default(0)
+  published Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([order])
+}
+
 // ── Projects / Case Studies ───────────────────────────────────────────────────
 
 model Project {

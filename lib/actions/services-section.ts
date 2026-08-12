@@ -1,15 +1,8 @@
 "use server";
 
-import { auth } from "@/auth";
 import { prisma } from "@/lib/db/prisma";
-import { withRetry, safeQuery } from "@/lib/db/resilient";
-import { revalidatePath } from "next/cache";
-import type { Prisma, ServicesSection } from "@prisma/client";
-
-async function requireAdmin() {
-  const session = await auth();
-  if (!session?.user) throw new Error("Unauthorized");
-}
+import { safeQuery } from "@/lib/db/resilient";
+import type { ServicesSection } from "@prisma/client";
 
 function defaultServicesSection(): ServicesSection {
   const now = new Date();
@@ -36,30 +29,6 @@ export async function getServicesSection(): Promise<ServicesSection> {
     null
   );
   return section ?? defaultServicesSection();
-}
-
-export async function getPublishedServicesSection(): Promise<ServicesSection | null> {
-  const section = await safeQuery(
-    () => prisma.servicesSection.findUnique({ where: { id: "singleton" } }),
-    null
-  );
-  if (!section?.published) return null;
-  return section;
-}
-
-export async function updateServicesSection(data: Prisma.ServicesSectionUpdateInput) {
-  await requireAdmin();
-  const section = await withRetry(() =>
-    prisma.servicesSection.upsert({
-      where: { id: "singleton" },
-      update: data,
-      create: { id: "singleton", ...(data as Prisma.ServicesSectionCreateInput) },
-    })
-  );
-  revalidatePath("/");
-  revalidatePath("/services");
-  revalidatePath("/admin/services");
-  return { success: true, section };
 }
 
 export async function getPublishedServicesForSection() {

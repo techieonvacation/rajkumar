@@ -91,64 +91,6 @@ export async function deleteBlogPost(id: string) {
   return { success: true, slug: post.slug };
 }
 
-// ── Services ──────────────────────────────────────────────────────────────────
-
-export async function getServices() {
-  return prisma.service.findMany({
-    orderBy: [{ order: "asc" }, { createdAt: "desc" }],
-  });
-}
-
-export async function getService(id: string) {
-  return prisma.service.findUnique({ where: { id } });
-}
-
-export async function createService(data: {
-  title: string;
-  slug: string;
-  icon?: string;
-  heroImage?: string;
-  summary?: string;
-  description?: string;
-  benefits?: string[];
-  process?: unknown;
-  deliverables?: string[];
-  duration?: string;
-  investment?: string;
-  faqs?: unknown;
-  ctaLabel?: string;
-  ctaUrl?: string;
-  featured?: boolean;
-  order?: number;
-  published?: boolean;
-}) {
-  await requireAdmin();
-  const service = await prisma.service.create({ data: data as Parameters<typeof prisma.service.create>[0]["data"] });
-  revalidatePath("/");
-  revalidatePath("/services");
-  revalidatePath("/admin/services");
-  return { success: true, service };
-}
-
-export async function updateService(id: string, data: Record<string, unknown>) {
-  await requireAdmin();
-  const service = await prisma.service.update({ where: { id }, data: data as Parameters<typeof prisma.service.update>[0]["data"] });
-  revalidatePath("/");
-  revalidatePath("/services");
-  revalidatePath(`/services/${service.slug}`);
-  revalidatePath("/admin/services");
-  return { success: true, service };
-}
-
-export async function deleteService(id: string) {
-  await requireAdmin();
-  await prisma.service.delete({ where: { id } });
-  revalidatePath("/");
-  revalidatePath("/services");
-  revalidatePath("/admin/services");
-  return { success: true };
-}
-
 // ── Contacts ──────────────────────────────────────────────────────────────────
 
 export async function getContacts(status?: string) {
@@ -192,45 +134,6 @@ export async function updateSiteConfig(data: Record<string, unknown>) {
   revalidatePath("/");
   revalidatePath("/admin/settings");
   return { success: true, config };
-}
-
-// ── Testimonials ──────────────────────────────────────────────────────────────
-
-export async function getTestimonials() {
-  return prisma.testimonial.findMany({
-    orderBy: [{ order: "asc" }, { createdAt: "desc" }],
-  });
-}
-
-export async function createTestimonial(data: {
-  name: string;
-  title?: string;
-  company?: string;
-  text: string;
-  rating?: number;
-  avatar?: string;
-  country?: string;
-  featured?: boolean;
-  published?: boolean;
-}) {
-  const t = await prisma.testimonial.create({ data });
-  revalidatePath("/");
-  revalidatePath("/admin/testimonials");
-  return { success: true, testimonial: t };
-}
-
-export async function updateTestimonial(id: string, data: Record<string, unknown>) {
-  const t = await prisma.testimonial.update({ where: { id }, data: data as Parameters<typeof prisma.testimonial.update>[0]["data"] });
-  revalidatePath("/");
-  revalidatePath("/admin/testimonials");
-  return { success: true, testimonial: t };
-}
-
-export async function deleteTestimonial(id: string) {
-  await prisma.testimonial.delete({ where: { id } });
-  revalidatePath("/");
-  revalidatePath("/admin/testimonials");
-  return { success: true };
 }
 
 // ── Page SEO ──────────────────────────────────────────────────────────────────
@@ -284,11 +187,11 @@ export async function logActivity(data: {
 // ── Dashboard Statistics ──────────────────────────────────────────────────────
 
 export async function getDashboardStats() {
-  const [contactsCount, blogPostsCount, servicesCount, testimonialsCount, recentContacts, recentPosts, activityLogs] = await Promise.all([
+  const [contactsCount, blogPostsCount, homeServicesCount, homeWorksCount, recentContacts, recentPosts, activityLogs] = await Promise.all([
     prisma.contact.count(),
     prisma.blogPost.count(),
-    prisma.service.count(),
-    prisma.testimonial.count(),
+    prisma.homeServiceCard.count(),
+    prisma.homeWorkItem.count(),
     prisma.contact.findMany({
       take: 5,
       orderBy: { createdAt: "desc" },
@@ -308,8 +211,8 @@ export async function getDashboardStats() {
     stats: {
       contacts: contactsCount,
       blogPosts: blogPostsCount,
-      services: servicesCount,
-      testimonials: testimonialsCount,
+      homeServices: homeServicesCount,
+      homeWorks: homeWorksCount,
     },
     recentContacts,
     recentPosts,
